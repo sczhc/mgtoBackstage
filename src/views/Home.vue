@@ -366,6 +366,7 @@ export default {
 
 .mgto-content {
     margin: 100px;
+
     .row {
         margin: 0;
     }

@@ -6,5 +6,10 @@ module.exports = {
     lintOnSave: false,
     chainWebpack: config => {
         config.resolve.alias.set('@', resolve('src'))
+    },
+    devServer: {
+        host: 'localhost',
+        port: '3333',
+        open: true
     }
 }

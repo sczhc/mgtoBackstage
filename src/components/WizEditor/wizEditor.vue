@@ -1,28 +1,49 @@
 <template>
 <div class="wizEditor">
-    <!-- <vue-ueditor-wrap v-model="msg"></vue-ueditor-wrap> -->
-    <vue-ueditor-wrap ref="ueditor" v-model="msg" :config="config"></vue-ueditor-wrap>
+    <textarea :id="id"></textarea>
 </div>
 </template>
 
 <script>
 export default {
+    name: 'ckeditor4',
+    props: {
+        id: {
+            type: String,
+            default: 'editor'
+        }
+    },
+    mounted() {
+        const self = this
+
+        // 渲染编辑器
+        self.ckeditor = window.CKEDITOR.replace(self.id)
+
+        // 设置初始内容
+        self.ckeditor.setData(self.value)
+
+        // 监听内容变更事件
+        self.ckeditor.on('change', function () {
+            self.$emit('input', self.ckeditor.getData())
+        })
+    },
     data() {
         return {
-            msg: '',
-            config: {
-                // 编辑器不自动被内容撑高
-                autoHeightEnabled: false,
-                // 初始容器高度
-                initialFrameHeight: 240,
-                // 初始容器宽度
-                initialFrameWidth: '100%',
-                toolbars: [
-                    ['fullscreen', 'source', '|','pasteplain', 'undo', 'redo','insertorderedlist','insertunorderedlist', '|','inserttable', 'horizontal','|','fontfamily','|'],
-                    ['bold','italic','strikethrough','removeformat','link','unlink','anchor']
-                ]
+            id: parseInt(Math.random() * 10000).toString(),
+            ckeditor: null
+        }
+    },
+    watch: {
+        // 监听prop的变化，更新ckeditor中的值
+        value: function () {
+            if (this.value !== this.ckeditor.getData()) {
+                this.ckeditor.setData(this.value)
             }
         }
+    },
+    // 销毁组件前，销毁编辑器
+    beforeDestroy() {
+        self.ckeditor.destroy()
     }
 }
 </script>
