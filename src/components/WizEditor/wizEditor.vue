@@ -1,6 +1,6 @@
 <template>
 <div class="wizEditor">
-    <textarea :id="id"></textarea>
+    <textarea :id="proId"></textarea>
 </div>
 </template>
 
@@ -8,16 +8,17 @@
 export default {
     name: 'ckeditor4',
     props: {
-        id: {
+        proId: {
             type: String,
             default: 'editor'
-        }
+        },
+        value: ''
     },
     mounted() {
         const self = this
 
         // 渲染编辑器
-        self.ckeditor = window.CKEDITOR.replace(self.id)
+        self.ckeditor = window.CKEDITOR.replace(self.proId)
 
         // 设置初始内容
         self.ckeditor.setData(self.value)
