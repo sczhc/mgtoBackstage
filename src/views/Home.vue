@@ -339,8 +339,8 @@ export default {
                     title: '繁體中文[默認]',
                     active: true,
                     content: {
-                        title: '',
-                        content: '',
+                        title: 'adsfadsf',
+                        content: '<div><p>this is bad</p></div>',
                         remark: ''
                     }
                 },
@@ -367,12 +367,21 @@ export default {
         handClick(item) {
             this.multilingualism.forEach(obj => obj.active = false)
             item.active = true
+            this.assignment()
         },
         titleEdit(val) {
             console.log(val)
         },
         conEdit(val) {
             console.log(val)
+        },
+        assignment() {
+            this.multilingualism.forEach(item => {
+                if (item.active == true) {
+                    this.titleValue = item.content.title
+                    this.conValue = item.content.content
+                }
+            })
         }
     },
     watch: {
@@ -402,9 +411,7 @@ export default {
         }
     },
     created() {
-        this.multilingualism.forEach(item => {
-            
-        })
+        this.assignment()
     }
 }
 </script>
