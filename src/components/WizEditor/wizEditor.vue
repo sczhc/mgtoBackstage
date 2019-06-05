@@ -1,6 +1,6 @@
 <template>
 <div class="wizEditor">
-    <textarea :id="proId"></textarea>
+    <textarea :id="id" :value="value"></textarea>
 </div>
 </template>
 
@@ -8,43 +8,58 @@
 export default {
     name: 'ckeditor4',
     props: {
-        proId: {
+        value: String,
+        id: {
             type: String,
             default: 'editor'
         },
-        value: ''
+        height: {
+            type: String,
+            default: '90px'
+        },
+        toolbar: {
+            type: Array,
+            default: () => [
+                ['Source', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromword', '-', 'Undo', 'Redo', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+                '/',
+                ['Table', 'HorizontalRule', '-', 'Styles', '-', 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat', '-', 'Link', 'Unlink', 'Anchor', '-', 'Maximize']
+            ]
+        },
+        language: {
+            type: String,
+            default: 'zh'
+        },
+        extraplugins: {
+            type: String,
+            default: ''
+        }
+    },
+    beforeUpdate() {
+        const ckeditorId = this.id;
+        if (this.value !== CKEDITOR.instances[ckeditorId].getData()) {
+            CKEDITOR.instances[ckeditorId].setData(this.value)
+        }
     },
     mounted() {
-        const self = this
-
-        // 渲染编辑器
-        self.ckeditor = window.CKEDITOR.replace(self.proId)
-
-        // 设置初始内容
-        self.ckeditor.setData(self.value)
-
-        // 监听内容变更事件
-        self.ckeditor.on('change', function () {
-            self.$emit('input', self.ckeditor.getData())
+        const ckeditorId = this.id
+        const ckeditorConfig = {
+            toolbar: this.toolbar,
+            language: this.language,
+            height: this.height,
+            extraplugins: this.extraplugins
+        }
+        CKEDITOR.replace(ckeditorId, ckeditorConfig)
+        CKEDITOR.instances[ckeditorId].setData(this.value)
+        CKEDITOR.instances[ckeditorId].on('change', () => {
+            let ckeditorData = CKEDITOR.instances[ckeditorId].getData()
+            if (ckeditorData !== this.value)
+                this.$emit('input', ckeditorData)
         })
     },
-    data() {
-        return {
-            id: parseInt(Math.random() * 10000).toString(),
-            ckeditor: null
-        }
-    },
-    watch: {
-        // 监听prop的变化，更新ckeditor中的值
-        value: function () {
-            if (this.value !== this.ckeditor.getData()) {
-                this.ckeditor.setData(this.value)
-            }
-        }
-    },
-    // 销毁组件前，销毁编辑器
-    beforeDestroy() {
-        self.ckeditor.destroy()
+    destroyed() {
+        const ckeditorId = this.id
+        if (CKEDITOR.instances[ckeditorId])
+            CKEDITOR.instances[ckeditorId].destroy()
     }
 }
 </script>

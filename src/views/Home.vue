@@ -218,7 +218,15 @@
                 </b-col>
             </template>
             <b-col md="12">
-                <wiz-editor></wiz-editor>
+                <div class="multilingualism">
+                    <div class="language">
+                        <div @click="handClick(item)" v-for="(item,index) in multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
+                    </div>
+                    <div class="multilin-text">
+                        <wiz-editor id="title" :value="titleValue" @input="titleEdit" :toolbar="toolbar"></wiz-editor>
+                        <wiz-editor id="content" :value="conValue" @input="conEdit"></wiz-editor>
+                    </div>
+                </div>
             </b-col>
         </b-row>
     </b-form>
@@ -321,6 +329,33 @@ export default {
                     text: '安道爾 (Andorra)'
                 }
             ],
+            toolbar: [
+                ['Source', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromword', '-', 'Undo', 'Redo', '-', 'Outdent', 'Indent'],
+                '/',
+                ['Table', 'HorizontalRule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
+            ],
+            multilingualism: [{
+                    language: 'zh-Tw',
+                    title: '繁體中文[默認]',
+                    active: true,
+                    content: {
+                        title: '',
+                        content: '',
+                        remark: ''
+                    }
+                },
+                {
+                    language: 'zh',
+                    title: '簡體中文',
+                    content: {
+                        title: '',
+                        content: '',
+                        remark: ''
+                    }
+                }
+            ],
+            titleValue: '',
+            conValue: '',
             typeIndex: 1,
             isUpdateNotice: true,
         }
@@ -328,6 +363,16 @@ export default {
     methods: {
         onSubmit() {
             console.log(this.form)
+        },
+        handClick(item) {
+            this.multilingualism.forEach(obj => obj.active = false)
+            item.active = true
+        },
+        titleEdit(val) {
+            console.log(val)
+        },
+        conEdit(val) {
+            console.log(val)
         }
     },
     watch: {
@@ -355,6 +400,11 @@ export default {
             },
             immediate: true
         }
+    },
+    created() {
+        this.multilingualism.forEach(item => {
+            
+        })
     }
 }
 </script>
@@ -376,6 +426,28 @@ export default {
 
         .col-form-label {
             text-align: right;
+        }
+    }
+}
+
+.multilingualism {
+    .language {
+        display: flex;
+        flex-wrap: wrap;
+
+        >div {
+            padding: 5px 10px;
+            border: 1px solid;
+            cursor: pointer;
+            background: #ccc;
+
+            &.langAction {
+                background: #fff;
+            }
+
+            &:not(:last-child) {
+                border-right: 0;
+            }
         }
     }
 }
