@@ -185,23 +185,7 @@
             </b-col>
             <b-col md="12">
                 <b-form-group horizontal :label-cols="3" label="*預設語言">
-                    <b-form-select v-model="form.indicator">
-                        <option value="">不設定預設語言</option>
-                        <option value="zh_TW">繁體中文</option>
-                        <option value="zh_CN">简体中文</option>
-                        <option value="pt_PT">Português</option>
-                        <option value="en">English</option>
-                        <option value="jp">日本語</option>
-                        <option value="kr">한국어</option>
-                        <option value="th">ภาษาไทย</option>
-                        <option value="my">Bahasa Malaysia</option>
-                        <option value="id">Bahasa Indonesia</option>
-                        <option value="de">Deutsch</option>
-                        <option value="fr">Français</option>
-                        <option value="es">Español</option>
-                        <option value="it">Italiano</option>
-                        <option value="ru">Pусский</option>
-                        <option value="ae">عربي</option>
+                    <b-form-select v-model="form.indicator" :options="language">
                     </b-form-select>
                 </b-form-group>
             </b-col>
@@ -221,6 +205,7 @@
                 <div class="multilingualism">
                     <div class="language">
                         <div @click="handClick(item)" v-for="(item,index) in multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
+                        <el-button icon="el-icon-plus" @click="handAdd"></el-button>
                     </div>
                     <div class="multilin-text">
                         <wiz-editor id="title" :value="titleValue" @input="titleEdit" :toolbar="toolbar"></wiz-editor>
@@ -230,6 +215,19 @@
             </b-col>
         </b-row>
     </b-form>
+    <!-- 弹窗 -->
+    <el-dialog :visible.sync="centerDialogVisible">
+        <div slot="title">選擇增加語言</div>
+        <b-form-select v-model="selected">
+            <template v-for="(item,index) in newLang">
+                <option :key="`lang_${index}`" :disabled="item.disabled" :value="item.value">{{item.text}}</option>
+            </template>
+        </b-form-select>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="choiceLang">确 定</el-button>
+        </div>
+    </el-dialog>
 </div>
 </template>
 
@@ -275,6 +273,71 @@ export default {
                 requestedTags: '',
                 datePicker: ''
             },
+            language: [{
+                    value: '',
+                    text: '不設定預設語言'
+                },
+                {
+                    value: 'zh_TW',
+                    text: '繁體中文'
+                },
+                {
+                    value: 'zh_CN',
+                    text: '简体中文'
+                },
+                {
+                    value: 'pt_PT',
+                    text: 'Português'
+                },
+                {
+                    value: 'en',
+                    text: 'English'
+                },
+                {
+                    value: 'jp',
+                    text: '日本語'
+                },
+                {
+                    value: 'kr',
+                    text: '한국어'
+                },
+                {
+                    value: 'th',
+                    text: 'ภาษาไทย'
+                },
+                {
+                    value: 'my',
+                    text: 'Bahasa Malaysia'
+                },
+                {
+                    value: 'id',
+                    text: 'Bahasa Indonesia'
+                },
+                {
+                    value: 'de',
+                    text: 'Deutsch'
+                },
+                {
+                    value: 'fr',
+                    text: 'Français'
+                },
+                {
+                    value: 'es',
+                    text: 'Español'
+                },
+                {
+                    value: 'it',
+                    text: 'Italiano'
+                },
+                {
+                    value: 'ru',
+                    text: 'Pусский'
+                },
+                {
+                    value: 'ae',
+                    text: 'عربي'
+                }
+            ],
             news: [{
                     value: '选项1',
                     label: '黄金糕'
@@ -335,7 +398,7 @@ export default {
                 ['Table', 'HorizontalRule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
             ],
             multilingualism: [{
-                    language: 'zh-Tw',
+                    language: 'zh_TW',
                     title: '繁體中文[默認]',
                     active: true,
                     content: {
@@ -345,7 +408,7 @@ export default {
                     }
                 },
                 {
-                    language: 'zh',
+                    language: 'zh_CN',
                     title: '簡體中文',
                     content: {
                         title: '',
@@ -354,6 +417,8 @@ export default {
                     }
                 }
             ],
+            centerDialogVisible: false,
+            selected: 'pt_PT',
             titleValue: '',
             conValue: '',
             typeIndex: 1,
@@ -368,6 +433,12 @@ export default {
             this.multilingualism.forEach(obj => obj.active = false)
             item.active = true
             this.assignment()
+        },
+        handAdd() {
+            this.centerDialogVisible = true
+        },
+        choiceLang() {
+            
         },
         titleEdit(val) {
             console.log(val)
@@ -408,6 +479,22 @@ export default {
                 }
             },
             immediate: true
+        }
+    },
+    computed: {
+        newLang() {
+            let newLang = this.language
+            newLang.shift()
+            newLang.forEach(item => {
+                item.disabled = false
+            })
+            this.multilingualism.forEach(item => {
+                newLang.forEach(obj => {
+                    if (item.language == obj.value)
+                        obj.disabled = true
+                })
+            })
+            return newLang
         }
     },
     created() {
