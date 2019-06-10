@@ -32,7 +32,13 @@ export default {
         extraplugins: {
             type: String,
             default: ''
-        }
+        },
+        editorLang: {
+            type: String,
+            default: ''
+        },
+//         config.extraPlugins ='sourcedialog';
+// config.removePlugins ='sourcearea';
     },
     beforeUpdate() {
         const ckeditorId = this.id;
@@ -52,8 +58,13 @@ export default {
         CKEDITOR.instances[ckeditorId].setData(this.value)
         CKEDITOR.instances[ckeditorId].on('change', () => {
             let ckeditorData = CKEDITOR.instances[ckeditorId].getData()
-            if (ckeditorData !== this.value)
-                this.$emit('input', ckeditorData)
+            if (ckeditorData !== this.value) {
+                let ckValue = {
+                    editorLang: this.editorLang,
+                    ckeditorData: ckeditorData
+                }
+                this.$emit('input', ckValue)
+            }
         })
     },
     destroyed() {

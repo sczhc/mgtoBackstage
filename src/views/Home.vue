@@ -205,11 +205,11 @@
                 <div class="multilingualism">
                     <div class="language">
                         <div @click="handClick(item)" v-for="(item,index) in multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
-                        <el-button icon="el-icon-plus" @click="handAdd"></el-button>
+                        <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
                     </div>
                     <div class="multilin-text">
-                        <wiz-editor id="title" :value="titleValue" @input="titleEdit" :toolbar="toolbar"></wiz-editor>
-                        <wiz-editor id="content" :value="conValue" @input="conEdit"></wiz-editor>
+                        <wiz-editor id="title" :value="titleValue" @input="titleEdit" :toolbar="toolbar" :editorLang="editorMult" extraplugins="sourcearea"></wiz-editor>
+                        <wiz-editor id="content" :value="conValue" @input="conEdit" :editorLang="editorMult"></wiz-editor>
                     </div>
                 </div>
             </b-col>
@@ -410,6 +410,7 @@ export default {
                 {
                     language: 'zh_CN',
                     title: '簡體中文',
+                    active: false,
                     content: {
                         title: '',
                         content: '',
@@ -423,6 +424,7 @@ export default {
             conValue: '',
             typeIndex: 1,
             isUpdateNotice: true,
+            choosingButton: true
         }
     },
     methods: {
@@ -435,16 +437,40 @@ export default {
             this.assignment()
         },
         handAdd() {
+            this.choosingLanguage
             this.centerDialogVisible = true
         },
         choiceLang() {
-            
+            let title = ''
+            this.language.forEach(item => {
+                if (item.value == this.selected)
+                    title = item.text
+            })
+            this.multilingualism.push({
+                language: this.selected,
+                title: title,
+                active: false,
+                content: {
+                    title: '',
+                    content: '',
+                    remark: ''
+                }
+            })
+            this.centerDialogVisible = false
         },
         titleEdit(val) {
-            console.log(val)
+            this.multilingualism.forEach(item => {
+                if (item.language == val.editorLang) {
+                    item.content.title = val.ckeditorData
+                }
+            })
         },
         conEdit(val) {
-            console.log(val)
+            this.multilingualism.forEach(item => {
+                if (item.language == val.editorLang) {
+                    item.content.content = val.ckeditorData
+                }
+            })
         },
         assignment() {
             this.multilingualism.forEach(item => {
@@ -483,18 +509,45 @@ export default {
     },
     computed: {
         newLang() {
-            let newLang = this.language
+            let newLang = []
+            newLang = this.language.map(item => {
+                return {
+                    ...item
+                }
+            })
             newLang.shift()
             newLang.forEach(item => {
                 item.disabled = false
             })
             this.multilingualism.forEach(item => {
                 newLang.forEach(obj => {
-                    if (item.language == obj.value)
+                    if (obj.value == item.language)
                         obj.disabled = true
                 })
             })
             return newLang
+        },
+        choosingLanguage() {
+            let choos = [...this.newLang]
+            this.multilingualism.forEach(item => {
+                choos.forEach((obj, index) => {
+                    if (obj.value == item.language)
+                        choos.splice(index, 1)
+                })
+            })
+            console.log(choos, this.newLang)
+            if (choos.length > 0)
+                this.selected = choos[0]['value']
+            else
+                this.choosingButton = false
+        },
+        editorMult() {
+            let editorLang = ''
+            this.multilingualism.forEach(item => {
+                if (item.active)
+                    editorLang = item.language
+            })
+            return editorLang
         }
     },
     created() {
@@ -513,6 +566,10 @@ export default {
 
     .row {
         margin: 0;
+    }
+
+    .el-button {
+        outline: none;
     }
 
     .form-group {
@@ -539,7 +596,7 @@ export default {
                 background: #fff;
             }
 
-            &:not(:last-child) {
+            &:not(:last-of-type) {
                 border-right: 0;
             }
         }
