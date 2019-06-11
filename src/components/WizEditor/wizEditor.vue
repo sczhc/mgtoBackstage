@@ -5,6 +5,11 @@
 </template>
 
 <script>
+const CKEDITOR = window.CKEDITOR
+
+if (!CKEDITOR)
+    throw new Error('ckeditor cannot locate!!!')
+
 export default {
     name: 'ckeditor4',
     props: {
@@ -37,8 +42,10 @@ export default {
             type: String,
             default: ''
         },
-//         config.extraPlugins ='sourcedialog';
-// config.removePlugins ='sourcearea';
+        startupMode: {
+            type: String,
+            default: 'wysiwyg'
+        }
     },
     beforeUpdate() {
         const ckeditorId = this.id;
@@ -52,7 +59,8 @@ export default {
             toolbar: this.toolbar,
             language: this.language,
             height: this.height,
-            extraplugins: this.extraplugins
+            extraplugins: this.extraplugins,
+            startupMode: this.startupMode
         }
         CKEDITOR.replace(ckeditorId, ckeditorConfig)
         CKEDITOR.instances[ckeditorId].setData(this.value)

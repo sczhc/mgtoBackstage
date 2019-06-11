@@ -208,7 +208,7 @@
                         <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
                     </div>
                     <div class="multilin-text">
-                        <wiz-editor id="title" :value="titleValue" @input="titleEdit" :toolbar="toolbar" :editorLang="editorMult" extraplugins="sourcearea"></wiz-editor>
+                        <wiz-editor id="title" :value="titleValue" @input="titleEdit" :toolbar="toolbar" :editorLang="editorMult"></wiz-editor>
                         <wiz-editor id="content" :value="conValue" @input="conEdit" :editorLang="editorMult"></wiz-editor>
                     </div>
                 </div>
@@ -419,12 +419,11 @@ export default {
                 }
             ],
             centerDialogVisible: false,
-            selected: 'pt_PT',
+            selected: '',
             titleValue: '',
             conValue: '',
             typeIndex: 1,
-            isUpdateNotice: true,
-            choosingButton: true
+            isUpdateNotice: true
         }
     },
     methods: {
@@ -434,13 +433,14 @@ export default {
         handClick(item) {
             this.multilingualism.forEach(obj => obj.active = false)
             item.active = true
+            this.startupMode = false
             this.assignment()
         },
         handAdd() {
-            this.choosingLanguage
+            this.selectedLang()
             this.centerDialogVisible = true
         },
-        choiceLang() {
+        choiceLang(val) {
             let title = ''
             this.language.forEach(item => {
                 if (item.value == this.selected)
@@ -459,6 +459,7 @@ export default {
             this.centerDialogVisible = false
         },
         titleEdit(val) {
+            console.log(val)
             this.multilingualism.forEach(item => {
                 if (item.language == val.editorLang) {
                     item.content.title = val.ckeditorData
@@ -466,11 +467,20 @@ export default {
             })
         },
         conEdit(val) {
+            console.log(val)
             this.multilingualism.forEach(item => {
                 if (item.language == val.editorLang) {
                     item.content.content = val.ckeditorData
                 }
             })
+        },
+        selectedLang() {
+            for (let i = 0; i < this.newLang.length; i++) {
+                if (!this.newLang[i].disabled) {
+                    this.selected = this.newLang[i].value
+                    return
+                }
+            }
         },
         assignment() {
             this.multilingualism.forEach(item => {
@@ -527,19 +537,8 @@ export default {
             })
             return newLang
         },
-        choosingLanguage() {
-            let choos = [...this.newLang]
-            this.multilingualism.forEach(item => {
-                choos.forEach((obj, index) => {
-                    if (obj.value == item.language)
-                        choos.splice(index, 1)
-                })
-            })
-            console.log(choos, this.newLang)
-            if (choos.length > 0)
-                this.selected = choos[0]['value']
-            else
-                this.choosingButton = false
+        choosingButton() {
+            return this.multilingualism.length !== this.newLang.length;
         },
         editorMult() {
             let editorLang = ''
