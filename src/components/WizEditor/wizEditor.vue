@@ -1,14 +1,11 @@
 <template>
-<div class="wizEditor">
+<div class="wizEditor">{{value }}
     <textarea :id="id" :value="value"></textarea>
 </div>
 </template>
 
 <script>
 const CKEDITOR = window.CKEDITOR
-
-if (!CKEDITOR)
-    throw new Error('ckeditor cannot locate!!!')
 
 export default {
     name: 'ckeditor4',
@@ -34,51 +31,90 @@ export default {
             type: String,
             default: 'zh'
         },
-        extraplugins: {
+        extraPlugins: {
             type: String,
             default: ''
         },
-        editorLang: {
-            type: String,
-            default: ''
-        },
-        startupMode: {
-            type: String,
-            default: 'wysiwyg'
-        }
+        // editorMult: {
+        //     type: Object,
+        //     default: () => {}
+        // },
+        // types: {
+        //     type: String,
+        //     default: ''
+        // },
     },
     beforeUpdate() {
-        const ckeditorId = this.id;
-        if (this.value !== CKEDITOR.instances[ckeditorId].getData()) {
-            CKEDITOR.instances[ckeditorId].setData(this.value)
+        if (this.value !== this.instance.getData()) {
+            this.instance.setData(this.value)
+        }
+    },
+    computed: {
+        instance() {
+            const ckeditorId = this.id
+            return CKEDITOR.instances[ckeditorId]
         }
     },
     mounted() {
-        const ckeditorId = this.id
-        const ckeditorConfig = {
-            toolbar: this.toolbar,
-            language: this.language,
-            height: this.height,
-            extraplugins: this.extraplugins,
-            startupMode: this.startupMode
-        }
-        CKEDITOR.replace(ckeditorId, ckeditorConfig)
-        CKEDITOR.instances[ckeditorId].setData(this.value)
-        CKEDITOR.instances[ckeditorId].on('change', () => {
-            let ckeditorData = CKEDITOR.instances[ckeditorId].getData()
-            if (ckeditorData !== this.value) {
-                let ckValue = {
-                    editorLang: this.editorLang,
-                    ckeditorData: ckeditorData
+        // this.create()
+    },
+    methods: {
+        create() {
+            if (!CKEDITOR) {
+                throw new Error('ckeditor cannot locate!!!')
+            } else {
+                const ckeditorId = this.id
+                console.log(ckeditorId)
+                const ckeditorConfig = {
+                    toolbar: this.toolbar,
+                    language: this.language,
+                    height: this.height,
+                    extraPlugins: this.extraPlugins,
                 }
-                this.$emit('input', ckValue)
+                CKEDITOR.replace(ckeditorId, ckeditorConfig)
+                this.instance.setData(this.value)
+                // this.instance.on('change', this.onChange)
+                this.instance.on('mode', this.onMode)
             }
-        })
+        },
+        onMode() {
+            if (this.instance.mode === 'source') {
+                let editable = this.instance.editable()
+                editable.attachListener(editable, 'input', () => {
+                    // this.onChange()
+                })
+            }
+        },
+        onChange() {
+            let ckeditorData = this.instance.getData()
+            if (ckeditorData !== this.value) {
+                // let ckValue = {
+                //     editorLang: this.editorMult.editorLang,
+                //     ckeditorData: ckeditorData
+                // }
+                // this.$emit('input', ckValue)
+
+                this.$emit('input', ckeditorData)
+                console.log("111", ckeditorData)
+                return
+            }
+        }
+    },
+    watch: {
+        'id': {
+            handler(n, o) {
+                console.log(n,o)
+                if (n !== o) {
+                    CKEDITOR.instances[o].destroy();
+                    this.create();
+                }
+            },
+            immediate:true
+        }
     },
     destroyed() {
-        const ckeditorId = this.id
-        if (CKEDITOR.instances[ckeditorId])
-            CKEDITOR.instances[ckeditorId].destroy()
+        if (this.instance)
+            this.instance.destroy()
     }
 }
 </script>
