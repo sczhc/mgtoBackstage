@@ -208,8 +208,8 @@
                         <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
                     </div>
                     <div class="multilin-text">
-                        <wiz-editor id="titleEditor" v-model="titleValue" :toolbar="toolbar"></wiz-editor>
-                        <!-- <wiz-editor id="contentEditor" types="content"  v-model="conValue"></wiz-editor> -->
+                        <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
+                        <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang"></wiz-editor>
                     </div>
                 </div>
             </b-col>
@@ -233,6 +233,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import WizEditor from '@/components/WizEditor'
 export default {
     components: {
@@ -525,14 +526,15 @@ export default {
             return this.form.multilingualism.length !== this.newLang.length;
         },
         lang() {
+            console.log(this.form.multilingualism[this.currentIndex].language)
             return this.form.multilingualism[this.currentIndex].language
         },
         currentIndex() {
-            return this.form.multilingualism.findIndex(item => item.active) || 0
+            return this.form.multilingualism.findIndex(item => item.active)
         },
         titleValue: {
             get() {
-                return this.currentIndex > 0 ? this.form.multilingualism[this.currentIndex].content.title : ''
+                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.title : ''
             },
             set(val) {
                 this.form.multilingualism[this.currentIndex].content.title = val
@@ -540,13 +542,14 @@ export default {
         },
         conValue: {
             get() {
-                return index > 0 ? this.form.multilingualism[this.currentIndex].content.content : ''
+                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.content : ''
             },
             set(val) {
                 this.form.multilingualism[this.currentIndex].content.content = val
             }
-        }
-    }
+        },
+    },
+
 }
 </script>
 

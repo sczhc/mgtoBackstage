@@ -1,6 +1,6 @@
 <template>
 <div class="wizEditor">
-    <textarea :id="id" :value="value"></textarea>
+    <textarea :id="id" :name="id" :value="value"></textarea>
 </div>
 </template>
 
@@ -15,6 +15,7 @@ export default {
             type: String,
             default: 'editor'
         },
+        
         height: {
             type: String,
             default: '90px'
@@ -30,6 +31,10 @@ export default {
         language: {
             type: String,
             default: 'zh'
+        },
+        editLang: {
+            type: String,
+            default: ''
         }
     },
     beforeUpdate() {
@@ -75,6 +80,20 @@ export default {
             let ckeditorData = this.instance.getData()
             if (ckeditorData !== this.value) {
                 this.$emit('input', ckeditorData)
+            }
+        }
+    },
+    watch: {
+        'editLang': {
+            handler(n, o) {
+                if (n !== o) {
+                    // this.instance.removeListener('change')
+                    // this.instance.removeListener('mode')
+                    this.instance.destroy(true)
+                    // CKEDITOR.remove(CKEDITOR.instances[this.id])
+                    // console.log(CKEDITOR.constructor(this.id))
+                    this.create()
+                }
             }
         }
     },
