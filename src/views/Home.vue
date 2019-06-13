@@ -205,11 +205,11 @@
                 <div class="multilingualism">
                     <div class="language">
                         <div @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
-                        <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>{{currentIndex}} {{titleValue}}
+                        <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
                     </div>
                     <div class="multilin-text">
-                        <wiz-editor :id="`titleEditor-${lang}`" types="title" v-model="titleValue" :editorMult="editorMult" :toolbar="toolbar"></wiz-editor>
-                        <!-- <wiz-editor id="contentEditor" types="content"  v-model="conValue" :editorMult="editorMult"></wiz-editor> -->
+                        <wiz-editor id="titleEditor" v-model="titleValue" :toolbar="toolbar"></wiz-editor>
+                        <!-- <wiz-editor id="contentEditor" types="content"  v-model="conValue"></wiz-editor> -->
                     </div>
                 </div>
             </b-col>
@@ -278,7 +278,7 @@ export default {
                         title: '繁體中文[默認]',
                         active: true,
                         content: {
-                            title: 'aa',
+                            title: 'aaaaaaa',
                             content: '',
                             remark: ''
                         }
@@ -288,7 +288,17 @@ export default {
                         title: '簡體中文',
                         active: false,
                         content: {
-                            title: 'dd',
+                            title: 'bbbbbb',
+                            content: '',
+                            remark: ''
+                        }
+                    },
+                    {
+                        language: 'pt_PT',
+                        title: 'Português',
+                        active: false,
+                        content: {
+                            title: 'cccccc',
                             content: '',
                             remark: ''
                         }
@@ -421,7 +431,6 @@ export default {
             ],
             centerDialogVisible: false,
             selected: '',
-
             typeIndex: 1,
             isUpdateNotice: true
         }
@@ -434,8 +443,6 @@ export default {
         handClick(item) {
             this.form.multilingualism.forEach(obj => obj.active = false)
             item.active = true;
-            // this.titleValue = item.content.title
-            // this.conValue = item.content.content
         },
         handAdd() {
             this.selectedLang()
@@ -459,25 +466,6 @@ export default {
             })
             this.centerDialogVisible = false
         },
-        // titleEdit(val) {
-        //     // this.form.multilingualism.forEach(item => {
-        //     //     if (item.language == val.editorLang) {
-        //     //         item.content.title = val.ckeditorData
-        //     //     }
-        //     // })
-        //     // this.assignment()
-        //     // this.titleValue = val
-        //     console.log(val)
-        // },
-        // conEdit(val) {
-        //     // this.form.multilingualism.forEach(item => {
-        //     //     if (item.language == val.editorLang) {
-        //     //         item.content.content = val.ckeditorData
-        //     //     }
-        //     // })
-        //     // this.conValue = val
-        //     // this.assignment()
-        // },
         selectedLang() {
             for (let i = 0; i < this.newLang.length; i++) {
                 if (!this.newLang[i].disabled) {
@@ -485,15 +473,6 @@ export default {
                     return
                 }
             }
-        },
-        assignment() {
-            // for (let i = 0; i < this.form.multilingualism.length; i++) {
-            //     if (this.form.multilingualism[i].active) {
-            //         this.titleValue = this.form.multilingualism[i].content.title
-            //         this.conValue = this.form.multilingualism[i].content.content
-            //         return
-            //     }
-            // }
         }
     },
     watch: {
@@ -548,24 +527,11 @@ export default {
         lang() {
             return this.form.multilingualism[this.currentIndex].language
         },
-        editorMult() {
-            let editorLang = '',
-                editorEvent = {}
-            this.form.multilingualism.forEach(item => {
-                if (item.active)
-                    editorLang = item.language
-            })
-            editorEvent = {
-                editorLang: editorLang,
-                multilingualism: this.form.multilingualism
-            }
-            return editorEvent
-        },
         currentIndex() {
             return this.form.multilingualism.findIndex(item => item.active) || 0
         },
         titleValue: {
-            get() { 
+            get() {
                 return this.currentIndex > 0 ? this.form.multilingualism[this.currentIndex].content.title : ''
             },
             set(val) {
@@ -574,17 +540,12 @@ export default {
         },
         conValue: {
             get() {
-                let index = this.currentIndex;
-                return index > 0 ? this.form.multilingualism[index].content.content : ''
+                return index > 0 ? this.form.multilingualism[this.currentIndex].content.content : ''
             },
             set(val) {
-                let index = this.currentIndex;
-                // this.form.multilingualism[index].content.content = val
+                this.form.multilingualism[this.currentIndex].content.content = val
             }
         }
-    },
-    created() {
-        this.assignment()
     }
 }
 </script>

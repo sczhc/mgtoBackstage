@@ -1,5 +1,5 @@
 <template>
-<div class="wizEditor">{{value }}
+<div class="wizEditor">
     <textarea :id="id" :value="value"></textarea>
 </div>
 </template>
@@ -30,19 +30,7 @@ export default {
         language: {
             type: String,
             default: 'zh'
-        },
-        extraPlugins: {
-            type: String,
-            default: ''
-        },
-        // editorMult: {
-        //     type: Object,
-        //     default: () => {}
-        // },
-        // types: {
-        //     type: String,
-        //     default: ''
-        // },
+        }
     },
     beforeUpdate() {
         if (this.value !== this.instance.getData()) {
@@ -56,7 +44,7 @@ export default {
         }
     },
     mounted() {
-        // this.create()
+        this.create()
     },
     methods: {
         create() {
@@ -64,16 +52,14 @@ export default {
                 throw new Error('ckeditor cannot locate!!!')
             } else {
                 const ckeditorId = this.id
-                console.log(ckeditorId)
                 const ckeditorConfig = {
                     toolbar: this.toolbar,
                     language: this.language,
-                    height: this.height,
-                    extraPlugins: this.extraPlugins,
+                    height: this.height
                 }
                 CKEDITOR.replace(ckeditorId, ckeditorConfig)
                 this.instance.setData(this.value)
-                // this.instance.on('change', this.onChange)
+                this.instance.on('change', this.onChange)
                 this.instance.on('mode', this.onMode)
             }
         },
@@ -81,35 +67,15 @@ export default {
             if (this.instance.mode === 'source') {
                 let editable = this.instance.editable()
                 editable.attachListener(editable, 'input', () => {
-                    // this.onChange()
+                    this.onChange()
                 })
             }
         },
         onChange() {
             let ckeditorData = this.instance.getData()
             if (ckeditorData !== this.value) {
-                // let ckValue = {
-                //     editorLang: this.editorMult.editorLang,
-                //     ckeditorData: ckeditorData
-                // }
-                // this.$emit('input', ckValue)
-
                 this.$emit('input', ckeditorData)
-                console.log("111", ckeditorData)
-                return
             }
-        }
-    },
-    watch: {
-        'id': {
-            handler(n, o) {
-                console.log(n,o)
-                if (n !== o) {
-                    CKEDITOR.instances[o].destroy();
-                    this.create();
-                }
-            },
-            immediate:true
         }
     },
     destroyed() {
