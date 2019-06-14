@@ -526,7 +526,6 @@ export default {
             return this.form.multilingualism.length !== this.newLang.length;
         },
         lang() {
-            console.log(this.form.multilingualism[this.currentIndex].language)
             return this.form.multilingualism[this.currentIndex].language
         },
         currentIndex() {

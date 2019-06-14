@@ -15,7 +15,7 @@ export default {
             type: String,
             default: 'editor'
         },
-        
+
         height: {
             type: String,
             default: '90px'
@@ -35,6 +35,11 @@ export default {
         editLang: {
             type: String,
             default: ''
+        }
+    },
+    data() {
+        return {
+            isWrong: false
         }
     },
     beforeUpdate() {
@@ -66,6 +71,9 @@ export default {
                 this.instance.setData(this.value)
                 this.instance.on('change', this.onChange)
                 this.instance.on('mode', this.onMode)
+                this.instance.on('focus', () => {
+                    this.instance.on('change', this.onChange)
+                })
             }
         },
         onMode() {
@@ -87,12 +95,7 @@ export default {
         'editLang': {
             handler(n, o) {
                 if (n !== o) {
-                    // this.instance.removeListener('change')
-                    // this.instance.removeListener('mode')
-                    this.instance.destroy(true)
-                    // CKEDITOR.remove(CKEDITOR.instances[this.id])
-                    // console.log(CKEDITOR.constructor(this.id))
-                    this.create()
+                    this.instance.removeListener('change',this.onChange)
                 }
             }
         }
