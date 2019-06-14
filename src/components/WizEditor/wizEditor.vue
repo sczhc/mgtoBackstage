@@ -5,6 +5,10 @@
 </template>
 
 <script>
+import {
+    setTimeout,
+    setInterval
+} from 'timers';
 const CKEDITOR = window.CKEDITOR
 
 export default {
@@ -19,6 +23,7 @@ export default {
             type: String,
             default: '90px'
         },
+        // 工具栏
         toolbar: {
             type: Array,
             default: () => [
@@ -27,6 +32,7 @@ export default {
                 ['Table', 'HorizontalRule', '-', 'Styles', '-', 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat', '-', 'Link', 'Unlink', 'Anchor', '-', 'Maximize']
             ]
         },
+        // 用户语言
         language: {
             type: String,
             default: 'zh'
@@ -35,14 +41,13 @@ export default {
             type: String,
             default: ''
         },
+        // 设置密钥的行为
+        // CKEDITOR.ENTER_P（1） - <p>创建新段落
+        // CKEDITOR.ENTER_BR（2） - 线条被<br>元素打破
+        // CKEDITOR.ENTER_DIV（3） - <div>创建新块
         enterMode: {
             type: Number,
             default: 2
-        }
-    },
-    data() {
-        return {
-            isWrong: false
         }
     },
     beforeUpdate() {
@@ -78,9 +83,6 @@ export default {
                 this.instance.on('focus', () => {
                     this.instance.on('change', this.onChange)
                 })
-                this.instance.on('instanceReady', evt => {
-                    evt.editor.dataProcessor.writer.selfClosingEnd = '>'
-                })
             }
         },
         onMode() {
@@ -102,8 +104,9 @@ export default {
         'editLang': {
             handler(n, o) {
                 if (n !== o) {
+                    this.instance.setData(this.value)
+                    this.instance.setMode('wysiwyg')
                     this.instance.removeListener('change', this.onChange)
-                    this.instance.setMode('wysiwyg', console.log(this.instance.mode))
                 }
             }
         }

@@ -533,7 +533,6 @@ export default {
         },
         titleValue: {
             get() {
-                console.log(this.form.multilingualism)
                 return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.title : ''
             },
             set(val) {
