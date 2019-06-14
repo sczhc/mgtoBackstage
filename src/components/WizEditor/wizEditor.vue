@@ -15,7 +15,6 @@ export default {
             type: String,
             default: 'editor'
         },
-
         height: {
             type: String,
             default: '90px'
@@ -35,6 +34,10 @@ export default {
         editLang: {
             type: String,
             default: ''
+        },
+        enterMode: {
+            type: Number,
+            default: 2
         }
     },
     data() {
@@ -65,7 +68,8 @@ export default {
                 const ckeditorConfig = {
                     toolbar: this.toolbar,
                     language: this.language,
-                    height: this.height
+                    height: this.height,
+                    enterMode: this.enterMode
                 }
                 CKEDITOR.replace(ckeditorId, ckeditorConfig)
                 this.instance.setData(this.value)
@@ -73,6 +77,9 @@ export default {
                 this.instance.on('mode', this.onMode)
                 this.instance.on('focus', () => {
                     this.instance.on('change', this.onChange)
+                })
+                this.instance.on('instanceReady', evt => {
+                    evt.editor.dataProcessor.writer.selfClosingEnd = '>'
                 })
             }
         },
@@ -95,7 +102,8 @@ export default {
         'editLang': {
             handler(n, o) {
                 if (n !== o) {
-                    this.instance.removeListener('change',this.onChange)
+                    this.instance.removeListener('change', this.onChange)
+                    this.instance.setMode('wysiwyg', console.log(this.instance.mode))
                 }
             }
         }

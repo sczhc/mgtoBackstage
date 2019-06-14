@@ -209,7 +209,7 @@
                     </div>
                     <div class="multilin-text">
                         <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
-                        <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang"></wiz-editor>
+                        <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
                     </div>
                 </div>
             </b-col>
@@ -533,6 +533,7 @@ export default {
         },
         titleValue: {
             get() {
+                console.log(this.form.multilingualism)
                 return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.title : ''
             },
             set(val) {
@@ -547,8 +548,7 @@ export default {
                 this.form.multilingualism[this.currentIndex].content.content = val
             }
         },
-    },
-
+    }
 }
 </script>
 
