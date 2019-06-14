@@ -3,7 +3,7 @@
     <b-form @submit="onSubmit">
         <b-row>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="*類別">
+                <b-form-group :label-cols="3" label="*類別">
                     <b-form-select v-model="form.newsType">
                         <option value="56">資料夾</option>
                         <option value="21">新聞公佈</option>
@@ -22,27 +22,27 @@
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="*審批狀態">
+                <b-form-group :label-cols="3" label="*審批狀態">
                     <el-input v-model="form.statusShow" :disabled="disabled"></el-input>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="上線時間">
+                <b-form-group :label-cols="3" label="上線時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.onlineAt" type="datetime"></el-date-picker>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="下線時間">
+                <b-form-group :label-cols="3" label="下線時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.offlineAt" type="datetime"></el-date-picker>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="*日期">
+                <b-form-group :label-cols="3" label="*日期">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.dateAt" type="datetime"></el-date-picker>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="">
+                <b-form-group :label-cols="3" label="">
                     <b-form-checkbox v-model="form.showDate">
                         <span>是否只顯示日期</span>
                     </b-form-checkbox>
@@ -58,21 +58,21 @@
             </b-col>
             <template v-if="typeIndex == 1">
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="*通知備註">
+                    <b-form-group :label-cols="3" label="*通知備註">
                         <b-form-textarea id="textarea-default" v-model="form.updateNoticeRemarks"></b-form-textarea>
                     </b-form-group>
                 </b-col>
             </template>
             <template v-if="typeIndex == 5">
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="國家地區">
+                    <b-form-group :label-cols="3" label="國家地區">
                         <b-form-select v-model="form.Country" :options="countrys"></b-form-select>
                     </b-form-group>
                 </b-col>
             </template>
             <template v-if="typeIndex == 2">
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="*發佈者在活動中的角色">
+                    <b-form-group :label-cols="3" label="*發佈者在活動中的角色">
                         <b-form-select v-model="form.extra.newsRole">
                             <option value="0">參與方</option>
                             <option value="1">支持方</option>
@@ -82,22 +82,22 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="開始時間">
+                    <b-form-group :label-cols="3" label="開始時間">
                         <el-date-picker prefix-icon="el-icon-date" v-model="form.extra.beginTime" type="datetime"></el-date-picker>
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="結束時間">
+                    <b-form-group :label-cols="3" label="結束時間">
                         <el-date-picker prefix-icon="el-icon-date" v-model="form.extra.endTime" type="datetime"></el-date-picker>
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="相關網頁鏈接">
+                    <b-form-group :label-cols="3" label="相關網頁鏈接">
                         <b-form-input v-model="form.extra.url"></b-form-input>
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="性質">
+                    <b-form-group :label-cols="3" label="性質">
                         <b-form-select v-model="form.extra.actNature">
                             <option value=""></option>
                             <option value="0">海外推廣 - 協會性質</option>
@@ -116,24 +116,24 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="參加團體">
+                    <b-form-group :label-cols="3" label="參加團體">
                         <b-form-textarea id="textarea-default" v-model="form.extra.joinGroup"></b-form-textarea>
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="截止報名日期">
+                    <b-form-group :label-cols="3" label="截止報名日期">
                         <el-date-picker prefix-icon="el-icon-date" v-model="form.extra.RegDeadline" type="datetime"></el-date-picker>
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="eService報名關聯id">
+                    <b-form-group :label-cols="3" label="eService報名關聯id">
                         <b-form-input v-model="form.extra.eService" type="number"></b-form-input>
                     </b-form-group>
                 </b-col>
             </template>
             <template v-if="typeIndex == 3">
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="*圖片方向">
+                    <b-form-group :label-cols="3" label="*圖片方向">
                         <b-form-select v-model="form.extra.picDirection">
                             <option value="transverse">橫向</option>
                             <option value="longitudinal">縱向</option>
@@ -141,7 +141,7 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="">
+                    <b-form-group :label-cols="3" label="">
                         <b-form-checkbox v-model="form.extra.picHasPersion">
                             <span>是否有人物</span>
                         </b-form-checkbox>
@@ -149,7 +149,7 @@
                 </b-col>
             </template>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="相關新聞">
+                <b-form-group :label-cols="3" label="相關新聞">
                     <el-select v-model="form.news" filterable multiple>
                         <el-option v-for="item in news" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
@@ -159,44 +159,44 @@
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="創建時間">
+                <b-form-group :label-cols="3" label="創建時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.createdAt" type="datetime" :disabled="disabled"></el-date-picker>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="更新時間">
+                <b-form-group :label-cols="3" label="更新時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.updatedAt" type="datetime" :disabled="disabled"></el-date-picker>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="更新者">
+                <b-form-group :label-cols="3" label="更新者">
                     <el-input v-model="form.updatedBy" :disabled="disabled"></el-input>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="發佈者">
+                <b-form-group :label-cols="3" label="發佈者">
                     <el-input v-model="form.createdByShow" :disabled="disabled"></el-input>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="審批者">
+                <b-form-group :label-cols="3" label="審批者">
                     <el-input v-model="form.approvedByShow" :disabled="disabled"></el-input>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="*預設語言">
+                <b-form-group :label-cols="3" label="*預設語言">
                     <b-form-select v-model="form.indicator" :options="language">
                     </b-form-select>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group horizontal :label-cols="3" label="*Requested New Tags">
+                <b-form-group :label-cols="3" label="*Requested New Tags">
                     <b-form-input v-model="form.requestedTags"></b-form-input>
                 </b-form-group>
             </b-col>
             <template v-if="typeIndex == 4">
                 <b-col md="12">
-                    <b-form-group horizontal :label-cols="3" label="*對應刊號">
+                    <b-form-group :label-cols="3" label="*對應刊號">
                         <el-date-picker v-model="form.datePicker" type="date"></el-date-picker>
                     </b-form-group>
                 </b-col>
@@ -428,7 +428,7 @@ export default {
             toolbar: [
                 ['Source', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromword', '-', 'Undo', 'Redo', '-', 'Outdent', 'Indent'],
                 '/',
-                ['Table', 'HorizontalRule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
+                ['Table', 'Rule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
             ],
             centerDialogVisible: false,
             selected: '',
