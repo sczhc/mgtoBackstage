@@ -7,9 +7,7 @@ import ElementUI from 'element-ui'
 Vue.use(BootstrapVue)
 Vue.use(ElementUI)
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import 'element-ui/lib/theme-chalk/index.css'
+import './scss/common.scss'
 
 Vue.config.productionTip = false
 new Vue({

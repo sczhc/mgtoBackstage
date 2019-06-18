@@ -3,7 +3,10 @@
     <b-form @submit="onSubmit">
         <b-row>
             <b-col md="12">
-                <b-form-group :label-cols="3" label="*類別">
+                <b-form-group :label-cols="3">
+                    <template slot="label">
+                        <label><span class="mandatory">*</span>類別</label>
+                    </template>
                     <b-form-select v-model="form.newsType">
                         <option value="56">資料夾</option>
                         <option value="21">新聞公佈</option>
@@ -22,7 +25,10 @@
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group :label-cols="3" label="*審批狀態">
+                <b-form-group :label-cols="3">
+                    <template slot="label">
+                        <label><span class="mandatory">*</span>審批狀態</label>
+                    </template>
                     <el-input v-model="form.statusShow" :disabled="disabled"></el-input>
                 </b-form-group>
             </b-col>
@@ -37,7 +43,10 @@
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group :label-cols="3" label="*日期">
+                <b-form-group :label-cols="3">
+                    <template slot="label">
+                        <label><span class="mandatory">*</span>日期</label>
+                    </template>
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.dateAt" type="datetime"></el-date-picker>
                 </b-form-group>
             </b-col>
@@ -58,7 +67,10 @@
             </b-col>
             <template v-if="typeIndex == 1">
                 <b-col md="12">
-                    <b-form-group :label-cols="3" label="*通知備註">
+                    <b-form-group :label-cols="3">
+                        <template slot="label">
+                            <label><span class="mandatory">*</span>通知備註</label>
+                        </template>
                         <b-form-textarea id="textarea-default" v-model="form.updateNoticeRemarks"></b-form-textarea>
                     </b-form-group>
                 </b-col>
@@ -72,7 +84,10 @@
             </template>
             <template v-if="typeIndex == 2">
                 <b-col md="12">
-                    <b-form-group :label-cols="3" label="*發佈者在活動中的角色">
+                    <b-form-group :label-cols="3">
+                        <template slot="label">
+                            <label><span class="mandatory">*</span>發佈者在活動中的角色</label>
+                        </template>
                         <b-form-select v-model="form.extra.newsRole">
                             <option value="0">參與方</option>
                             <option value="1">支持方</option>
@@ -133,7 +148,10 @@
             </template>
             <template v-if="typeIndex == 3">
                 <b-col md="12">
-                    <b-form-group :label-cols="3" label="*圖片方向">
+                    <b-form-group :label-cols="3">
+                        <template slot="label">
+                            <label><span class="mandatory">*</span>圖片方向</label>
+                        </template>
                         <b-form-select v-model="form.extra.picDirection">
                             <option value="transverse">橫向</option>
                             <option value="longitudinal">縱向</option>
@@ -153,7 +171,7 @@
                     <el-select v-model="form.news" filterable multiple>
                         <el-option v-for="item in news" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
-                        <div slot="empty">No results found</div>
+                        <div slot="empty" class="noResults">No results found</div>
                         <!-- <div slot="empty">Please enter 1 or more characters</div> -->
                     </el-select>
                 </b-form-group>
@@ -184,19 +202,28 @@
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group :label-cols="3" label="*預設語言">
+                <b-form-group :label-cols="3">
+                    <template slot="label">
+                        <label><span class="mandatory">*</span>預設語言</label>
+                    </template>
                     <b-form-select v-model="form.indicator" :options="language">
                     </b-form-select>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group :label-cols="3" label="*Requested New Tags">
+                <b-form-group :label-cols="3">
+                    <template slot="label">
+                        <label><span class="mandatory">*</span>Requested New Tags</label>
+                    </template>
                     <b-form-input v-model="form.requestedTags"></b-form-input>
                 </b-form-group>
             </b-col>
             <template v-if="typeIndex == 4">
                 <b-col md="12">
-                    <b-form-group :label-cols="3" label="*對應刊號">
+                    <b-form-group :label-cols="3">
+                        <template slot="label">
+                            <label><span class="mandatory">*</span>對應刊號</label>
+                        </template>
                         <el-date-picker v-model="form.datePicker" type="date"></el-date-picker>
                     </b-form-group>
                 </b-col>
@@ -208,12 +235,65 @@
                         <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
                     </div>
                     <div class="multilin-text">
-                        <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
-                        <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
+                        <div class="title-mult">
+                            <b-row>
+                                <b-col md="2">
+                                    <p>標題</p>
+                                </b-col>
+                                <b-col md="10">
+                                    <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
+                                </b-col>
+                            </b-row>
+                        </div>
+                        <div class="content-mult">
+                            <b-row>
+                                <b-col md="2">
+                                    <p>內容</p>
+                                </b-col>
+                                <b-col md="10">
+                                    <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
+                                </b-col>
+                            </b-row>
+                        </div>
+                        <div class="remark-mult">
+                            <b-row>
+                                <b-col md="2">
+                                    <p> 內部備註</p>
+                                </b-col>
+                                <b-col md="10">
+                                    <textarea id="news_draft_translations_kr_summary" v-model="remarkValue"></textarea>
+                                </b-col>
+                            </b-row>
+                        </div>
                     </div>
                 </div>
             </b-col>
-            <b-button type="submit" variant="primary">提交</b-button>
+            <b-col md="12">
+                <b-form-group :label-cols="3">
+                    <template slot="label">
+                        <label><span class="mandatory">*</span>附件</label>
+                    </template>
+                    <input-file></input-file>
+                </b-form-group>
+            </b-col>
+            <b-col md="12">
+                <div class="form-actions">
+                    <template v-if="types === 'create'">
+                        <b-button squared variant="primary" type="submit">創建</b-button>
+                    </template>
+                    <template v-else>
+                        <b-button squared variant="primary" type="submit">更新</b-button>
+                    </template>
+                    <a class="btn btn-back" href="/admintools/news_draft/">返回</a>
+                    <template v-if="types !== 'create'">
+                        <b-button class="btn-preview">預覽</b-button>
+                    </template>
+                    <template v-if="types === 'update'">
+                        <b-button class="btn-approval">提交審批</b-button>
+                        <b-button class="btn-release">提交直接發佈</b-button>
+                    </template>
+                </div>
+            </b-col>
         </b-row>
     </b-form>
     <!-- 弹窗 -->
@@ -235,9 +315,17 @@
 <script>
 import Vue from 'vue';
 import WizEditor from '@/components/WizEditor'
+import InputFile from '@/components/InputFile'
 export default {
     components: {
-        WizEditor
+        WizEditor,
+        InputFile
+    },
+    props: {
+        types: {
+            type: String,
+            default: 'update'
+        }
     },
     data() {
         return {
@@ -547,54 +635,14 @@ export default {
                 this.form.multilingualism[this.currentIndex].content.content = val
             }
         },
+        remarkValue: {
+            get() {
+                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.remark : ''
+            },
+            set(val) {
+                this.form.multilingualism[this.currentIndex].content.remark = val
+            }
+        }
     }
 }
 </script>
-
-<style lang="scss">
-.necessary {
-    color: #D53F40;
-}
-
-.mgto-content {
-    margin: 100px;
-
-    .row {
-        margin: 0;
-    }
-
-    .el-button {
-        outline: none;
-    }
-
-    .form-group {
-        margin: 15px 0;
-
-        .col-form-label {
-            text-align: right;
-        }
-    }
-}
-
-.multilingualism {
-    .language {
-        display: flex;
-        flex-wrap: wrap;
-
-        >div {
-            padding: 5px 10px;
-            border: 1px solid;
-            cursor: pointer;
-            background: #ccc;
-
-            &.langAction {
-                background: #fff;
-            }
-
-            &:not(:last-of-type) {
-                border-right: 0;
-            }
-        }
-    }
-}
-</style>
