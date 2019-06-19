@@ -273,7 +273,23 @@
                     <template slot="label">
                         <label><span class="mandatory">*</span>附件</label>
                     </template>
-                    <input-file></input-file>
+                    <div class="wiz-fileInput">
+                        <div class="fileHead">
+                            <div class="uploadBtn">
+                                <b-button class="btn-upload-file"><i class="el-icon-upload"></i>開始上傳</b-button>
+                                <b-button class="btn-delete-file"><i class="el-icon-delete"></i>刪除文件</b-button>
+                                <b-form-checkbox id="checkbox" v-model="deleteFile" name="checkbox">刪除所有文件</b-form-checkbox>
+                                <b-button aria-controls="collapse" @click="showCollapse = !showCollapse" class="btn-upload-coolapse">
+                                    <i :class="showCollapse? 'el-icon-arrow-up':'el-icon-arrow-down'"></i>
+                                </b-button>
+                            </div>
+                        </div>
+                        <b-collapse id="collapse" class="upload-collapse-content" v-model="showCollapse">
+                            <b-card>
+                                <input-file></input-file>
+                            </b-card>
+                        </b-collapse>
+                    </div>
                 </b-form-group>
             </b-col>
             <b-col md="12">
@@ -329,6 +345,7 @@ export default {
     },
     data() {
         return {
+            deleteFile: false,
             disabled: true,
             form: {
                 newsType: 56,
@@ -521,7 +538,9 @@ export default {
             centerDialogVisible: false,
             selected: '',
             typeIndex: 1,
-            isUpdateNotice: true
+            isUpdateNotice: true,
+            fileList: [],
+            showCollapse: true
         }
     },
     methods: {

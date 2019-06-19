@@ -1,36 +1,36 @@
-.file_upload {
-    .drag_file {
-        background-color: #fff;
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        box-sizing: border-box;
-        width: 360px;
-        height: 180px;
-        text-align: center;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
+// .file_upload {
+//     .drag_file {
+//         background-color: #fff;
+//         border: 1px dashed #d9d9d9;
+//         border-radius: 6px;
+//         box-sizing: border-box;
+//         width: 360px;
+//         height: 180px;
+//         text-align: center;
+//         cursor: pointer;
+//         position: relative;
+//         overflow: hidden;
 
-        .el-icon-upload {
-            font-size: 67px;
-            color: #c0c4cc;
-            margin: 40px 0 16px;
-            line-height: 50px;
-        }
+//         .el-icon-upload {
+//             font-size: 67px;
+//             color: #c0c4cc;
+//             margin: 40px 0 16px;
+//             line-height: 50px;
+//         }
 
-        .file-text {
-            color: #606266;
-            font-size: 14px;
-            text-align: center;
+//         .file-text {
+//             color: #606266;
+//             font-size: 14px;
+//             text-align: center;
 
-            em {
-                color: #409eff;
-                font-style: normal;
-            }
-        }
+//             em {
+//                 color: #409eff;
+//                 font-style: normal;
+//             }
+//         }
 
-        .file-upload_input {
-            display: none;
-        }
-    }
-}
+//         .file-upload_input {
+//             display: none;
+//         }
+//     }
+// }
