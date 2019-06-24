@@ -269,7 +269,7 @@
                 </div>
             </b-col>
             <b-col md="12">
-                <b-form-group :label-cols="3">
+                <b-form-group :label-cols="2">
                     <template slot="label">
                         <label><span class="mandatory">*</span>附件</label>
                     </template>

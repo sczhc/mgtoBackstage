@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import test from './views/test.vue'
 
 Vue.use(Router)
 
@@ -15,9 +14,14 @@ export default new Router({
       component: Home
     },
     {
-      path:'/test',
+      path: '/test',
       name: 'test',
-      component:test
+      component: () => import('@/views/test.vue')
+    },
+    {
+      path: '/darg',
+      name: 'darg',
+      component: () => import('@/views/darg.vue')
     }
   ]
 })
