@@ -5,7 +5,9 @@
             <b-col md="12">
                 <b-form-group :label-cols="3">
                     <template slot="label">
-                        <label><span class="mandatory">*</span>類別</label>
+                        <label>
+                <span class="mandatory">*</span>類別
+              </label>
                     </template>
                     <b-form-select v-model="form.newsType">
                         <option value="56">資料夾</option>
@@ -27,7 +29,9 @@
             <b-col md="12">
                 <b-form-group :label-cols="3">
                     <template slot="label">
-                        <label><span class="mandatory">*</span>審批狀態</label>
+                        <label>
+                <span class="mandatory">*</span>審批狀態
+              </label>
                     </template>
                     <el-input v-model="form.statusShow" :disabled="disabled"></el-input>
                 </b-form-group>
@@ -45,13 +49,15 @@
             <b-col md="12">
                 <b-form-group :label-cols="3">
                     <template slot="label">
-                        <label><span class="mandatory">*</span>日期</label>
+                        <label>
+                <span class="mandatory">*</span>日期
+              </label>
                     </template>
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.dateAt" type="datetime"></el-date-picker>
                 </b-form-group>
             </b-col>
             <b-col md="12">
-                <b-form-group :label-cols="3" label="">
+                <b-form-group :label-cols="3" label>
                     <b-form-checkbox v-model="form.showDate">
                         <span>是否只顯示日期</span>
                     </b-form-checkbox>
@@ -69,7 +75,9 @@
                 <b-col md="12">
                     <b-form-group :label-cols="3">
                         <template slot="label">
-                            <label><span class="mandatory">*</span>通知備註</label>
+                            <label>
+                  <span class="mandatory">*</span>通知備註
+                </label>
                         </template>
                         <b-form-textarea id="textarea-default" v-model="form.updateNoticeRemarks"></b-form-textarea>
                     </b-form-group>
@@ -86,7 +94,9 @@
                 <b-col md="12">
                     <b-form-group :label-cols="3">
                         <template slot="label">
-                            <label><span class="mandatory">*</span>發佈者在活動中的角色</label>
+                            <label>
+                  <span class="mandatory">*</span>發佈者在活動中的角色
+                </label>
                         </template>
                         <b-form-select v-model="form.extra.newsRole">
                             <option value="0">參與方</option>
@@ -114,7 +124,7 @@
                 <b-col md="12">
                     <b-form-group :label-cols="3" label="性質">
                         <b-form-select v-model="form.extra.actNature">
-                            <option value=""></option>
+                            <option value></option>
                             <option value="0">海外推廣 - 協會性質</option>
                             <option value="1">海外推廣 - 貿易會</option>
                             <option value="2">海外推廣 - 貿易會 (B to C)</option>
@@ -150,7 +160,9 @@
                 <b-col md="12">
                     <b-form-group :label-cols="3">
                         <template slot="label">
-                            <label><span class="mandatory">*</span>圖片方向</label>
+                            <label>
+                  <span class="mandatory">*</span>圖片方向
+                </label>
                         </template>
                         <b-form-select v-model="form.extra.picDirection">
                             <option value="transverse">橫向</option>
@@ -159,7 +171,7 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="12">
-                    <b-form-group :label-cols="3" label="">
+                    <b-form-group :label-cols="3" label>
                         <b-form-checkbox v-model="form.extra.picHasPersion">
                             <span>是否有人物</span>
                         </b-form-checkbox>
@@ -169,8 +181,7 @@
             <b-col md="12">
                 <b-form-group :label-cols="3" label="相關新聞">
                     <el-select v-model="form.news" filterable multiple>
-                        <el-option v-for="item in news" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
+                        <el-option v-for="item in news" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         <div slot="empty" class="noResults">No results found</div>
                         <!-- <div slot="empty">Please enter 1 or more characters</div> -->
                     </el-select>
@@ -204,16 +215,19 @@
             <b-col md="12">
                 <b-form-group :label-cols="3">
                     <template slot="label">
-                        <label><span class="mandatory">*</span>預設語言</label>
+                        <label>
+                <span class="mandatory">*</span>預設語言
+              </label>
                     </template>
-                    <b-form-select v-model="form.indicator" :options="language">
-                    </b-form-select>
+                    <b-form-select v-model="form.indicator" :options="language"></b-form-select>
                 </b-form-group>
             </b-col>
             <b-col md="12">
                 <b-form-group :label-cols="3">
                     <template slot="label">
-                        <label><span class="mandatory">*</span>Requested New Tags</label>
+                        <label>
+                <span class="mandatory">*</span>Requested New Tags
+              </label>
                     </template>
                     <b-form-input v-model="form.requestedTags"></b-form-input>
                 </b-form-group>
@@ -222,7 +236,9 @@
                 <b-col md="12">
                     <b-form-group :label-cols="3">
                         <template slot="label">
-                            <label><span class="mandatory">*</span>對應刊號</label>
+                            <label>
+                  <span class="mandatory">*</span>對應刊號
+                </label>
                         </template>
                         <el-date-picker v-model="form.datePicker" type="date"></el-date-picker>
                     </b-form-group>
@@ -258,7 +274,7 @@
                         <div class="remark-mult">
                             <b-row>
                                 <b-col md="2">
-                                    <p> 內部備註</p>
+                                    <p>內部備註</p>
                                 </b-col>
                                 <b-col md="10">
                                     <textarea id="news_draft_translations_kr_summary" v-model="remarkValue"></textarea>
@@ -271,7 +287,9 @@
             <b-col md="12">
                 <b-form-group :label-cols="2">
                     <template slot="label">
-                        <label><span class="mandatory">*</span>附件</label>
+                        <label>
+                <span class="mandatory">*</span>附件
+              </label>
                     </template>
                     <div class="wiz-fileInput">
                         <darg-file :newLang="dargLang"></darg-file>
@@ -289,7 +307,7 @@
                             <b-card>
                                 <input-file></input-file>
                             </b-card>
-                        </b-collapse> -->
+              </b-collapse>-->
                     </div>
                 </b-form-group>
             </b-col>
@@ -330,9 +348,9 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import WizEditor from '@/components/WizEditor'
-import DargFile from '@/components/DargFile'
+import Vue from "vue";
+import WizEditor from "@/pack/WCkeditor";
+import DargFile from "@/pack/DargFile";
 export default {
     components: {
         WizEditor,
@@ -341,7 +359,7 @@ export default {
     props: {
         types: {
             type: String,
-            default: 'update'
+            default: "update"
         }
     },
     data() {
@@ -350,383 +368,411 @@ export default {
             disabled: true,
             form: {
                 newsType: 56,
-                statusShow: 'DRAFT',
-                onlineAt: '',
-                offlineAt: '',
-                dateAt: '',
+                statusShow: "DRAFT",
+                onlineAt: "",
+                offlineAt: "",
+                dateAt: "",
                 showDate: false,
                 showInHomePage: false,
                 isSendUpdateNotice: false,
-                updateNoticeRemarks: '',
-                Country: '',
+                updateNoticeRemarks: "",
+                Country: "",
                 extra: {
                     newsRole: 0,
-                    beginTime: '',
-                    endTime: '',
-                    url: '',
-                    actNature: '',
-                    joinGroup: '',
-                    RegDeadline: '',
+                    beginTime: "",
+                    endTime: "",
+                    url: "",
+                    actNature: "",
+                    joinGroup: "",
+                    RegDeadline: "",
                     eService: null,
-                    picDirection: 'transverse',
+                    picDirection: "transverse",
                     picHasPersion: false
                 },
-                news: '',
-                createdAt: '',
-                updatedAt: '',
-                updatedBy: '',
-                createdByShow: '',
-                approvedByShow: '',
-                indicator: '',
-                requestedTags: '',
-                datePicker: '',
+                news: "",
+                createdAt: "",
+                updatedAt: "",
+                updatedBy: "",
+                createdByShow: "",
+                approvedByShow: "",
+                indicator: "",
+                requestedTags: "",
+                datePicker: "",
                 multilingualism: [{
-                        language: 'zh_TW',
-                        title: '繁體中文[默認]',
+                        language: "zh_TW",
+                        title: "繁體中文[默認]",
                         active: true,
                         content: {
-                            title: 'aaaaaaa',
-                            content: '',
-                            remark: ''
+                            title: "aaaaaaa",
+                            content: "",
+                            remark: ""
                         }
                     },
                     {
-                        language: 'zh_CN',
-                        title: '簡體中文',
+                        language: "zh_CN",
+                        title: "簡體中文",
                         active: false,
                         content: {
-                            title: 'bbbbbb',
-                            content: '',
-                            remark: ''
+                            title: "bbbbbb",
+                            content: "",
+                            remark: ""
                         }
                     },
                     {
-                        language: 'pt_PT',
-                        title: 'Português',
+                        language: "pt_PT",
+                        title: "Português",
                         active: false,
                         content: {
-                            title: 'cccccc',
-                            content: '',
-                            remark: ''
+                            title: "cccccc",
+                            content: "",
+                            remark: ""
                         }
                     }
-                ],
+                ]
             },
             language: [{
-                    value: '',
-                    text: '不設定預設語言'
+                    value: "",
+                    text: "不設定預設語言"
                 },
                 {
-                    value: 'zh_TW',
-                    text: '繁體中文'
+                    value: "zh_TW",
+                    text: "繁體中文"
                 },
                 {
-                    value: 'zh_CN',
-                    text: '简体中文'
+                    value: "zh_CN",
+                    text: "简体中文"
                 },
                 {
-                    value: 'pt_PT',
-                    text: 'Português'
+                    value: "pt_PT",
+                    text: "Português"
                 },
                 {
-                    value: 'en',
-                    text: 'English'
+                    value: "en",
+                    text: "English"
                 },
                 {
-                    value: 'jp',
-                    text: '日本語'
+                    value: "jp",
+                    text: "日本語"
                 },
                 {
-                    value: 'kr',
-                    text: '한국어'
+                    value: "kr",
+                    text: "한국어"
                 },
                 {
-                    value: 'th',
-                    text: 'ภาษาไทย'
+                    value: "th",
+                    text: "ภาษาไทย"
                 },
                 {
-                    value: 'my',
-                    text: 'Bahasa Malaysia'
+                    value: "my",
+                    text: "Bahasa Malaysia"
                 },
                 {
-                    value: 'id',
-                    text: 'Bahasa Indonesia'
+                    value: "id",
+                    text: "Bahasa Indonesia"
                 },
                 {
-                    value: 'de',
-                    text: 'Deutsch'
+                    value: "de",
+                    text: "Deutsch"
                 },
                 {
-                    value: 'fr',
-                    text: 'Français'
+                    value: "fr",
+                    text: "Français"
                 },
                 {
-                    value: 'es',
-                    text: 'Español'
+                    value: "es",
+                    text: "Español"
                 },
                 {
-                    value: 'it',
-                    text: 'Italiano'
+                    value: "it",
+                    text: "Italiano"
                 },
                 {
-                    value: 'ru',
-                    text: 'Pусский'
+                    value: "ru",
+                    text: "Pусский"
                 },
                 {
-                    value: 'ae',
-                    text: 'عربي'
+                    value: "ae",
+                    text: "عربي"
                 }
             ],
             dargLang: [{
-                    value: 'zh_TW',
-                    text: '繁體中文',
+                    value: "zh_TW",
+                    text: "繁體中文",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'zh_CN',
-                    text: '简体中文',
+                    value: "zh_CN",
+                    text: "简体中文",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'pt_PT',
-                    text: 'Português',
+                    value: "pt_PT",
+                    text: "Português",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'en',
-                    text: 'English',
+                    value: "en",
+                    text: "English",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'jp',
-                    text: '日本語',
+                    value: "jp",
+                    text: "日本語",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'kr',
-                    text: '한국어',
+                    value: "kr",
+                    text: "한국어",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'th',
-                    text: 'ภาษาไทย',
+                    value: "th",
+                    text: "ภาษาไทย",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'my',
-                    text: 'Bahasa Malaysia',
+                    value: "my",
+                    text: "Bahasa Malaysia",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'id',
-                    text: 'Bahasa Indonesia',
+                    value: "id",
+                    text: "Bahasa Indonesia",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'de',
-                    text: 'Deutsch',
+                    value: "de",
+                    text: "Deutsch",
 
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'fr',
-                    text: 'Français',
+                    value: "fr",
+                    text: "Français",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'es',
-                    text: 'Español',
+                    value: "es",
+                    text: "Español",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'it',
-                    text: 'Italiano',
+                    value: "it",
+                    text: "Italiano",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'ru',
-                    text: 'Pусский',
+                    value: "ru",
+                    text: "Pусский",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 },
                 {
-                    value: 'ae',
-                    text: 'عربي',
+                    value: "ae",
+                    text: "عربي",
                     content: {
-                        title: '',
-                        summary: ''
+                        title: "",
+                        summary: ""
                     }
                 }
             ],
             news: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
+                    value: "选项1",
+                    label: "黄金糕"
                 },
                 {
-                    value: '选项6',
-                    label: '黄金糕1'
+                    value: "选项2",
+                    label: "双皮奶"
                 },
                 {
-                    value: '选项7',
-                    label: '黄金糕2'
+                    value: "选项3",
+                    label: "蚵仔煎"
                 },
                 {
-                    value: '选项8',
-                    label: '黄金糕3'
+                    value: "选项4",
+                    label: "龙须面"
                 },
+                {
+                    value: "选项5",
+                    label: "北京烤鸭"
+                },
+                {
+                    value: "选项6",
+                    label: "黄金糕1"
+                },
+                {
+                    value: "选项7",
+                    label: "黄金糕2"
+                },
+                {
+                    value: "选项8",
+                    label: "黄金糕3"
+                }
             ],
             countrys: [{
-                    value: '',
-                    text: ''
+                    value: "",
+                    text: ""
                 },
                 {
-                    value: 'A2',
-                    text: '澳大拉西亞 (Australasia)'
+                    value: "A2",
+                    text: "澳大拉西亞 (Australasia)"
                 },
                 {
-                    value: 'A3',
-                    text: '大西洋 (Atlantic Ocean)'
+                    value: "A3",
+                    text: "大西洋 (Atlantic Ocean)"
                 },
                 {
-                    value: 'AA',
-                    text: '阿魯尼丘帕得許 (Arunachal Pradesh (State of))'
+                    value: "AA",
+                    text: "阿魯尼丘帕得許 (Arunachal Pradesh (State of))"
                 },
                 {
-                    value: 'AC',
-                    text: '阿士摩卡提爾群島 (Ashmore and Cartier Islands)'
+                    value: "AC",
+                    text: "阿士摩卡提爾群島 (Ashmore and Cartier Islands)"
                 },
                 {
-                    value: 'AD',
-                    text: '安道爾 (Andorra)'
+                    value: "AD",
+                    text: "安道爾 (Andorra)"
                 }
             ],
             toolbar: [
-                ['Source', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromword', '-', 'Undo', 'Redo', '-', 'Outdent', 'Indent'],
-                '/',
-                ['Table', 'Rule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
+                [
+                    "Source",
+                    "-",
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    "PasteFromword",
+                    "-",
+                    "Undo",
+                    "Redo",
+                    "-",
+                    "Outdent",
+                    "Indent"
+                ],
+                "/",
+                [
+                    "Table",
+                    "Rule",
+                    "-",
+                    "Styles",
+                    "-",
+                    "Strike",
+                    "-",
+                    "RemoveFormat",
+                    "-",
+                    "Maximize"
+                ]
             ],
             centerDialogVisible: false,
-            selected: '',
+            selected: "",
             typeIndex: 1,
             isUpdateNotice: true,
             fileList: [],
             showCollapse: true
-        }
+        };
     },
     methods: {
         onSubmit(evt) {
-            evt.preventDefault()
-            console.log(this.form)
+            evt.preventDefault();
+            console.log(this.form);
         },
         handClick(item) {
-            this.form.multilingualism.forEach(obj => obj.active = false)
+            this.form.multilingualism.forEach(obj => (obj.active = false));
             item.active = true;
         },
         handAdd() {
-            this.selectedLang()
-            this.centerDialogVisible = true
+            this.selectedLang();
+            this.centerDialogVisible = true;
         },
         choiceLang(val) {
-            let title = ''
+            let title = "";
             this.language.forEach(item => {
-                if (item.value == this.selected)
-                    title = item.text
-            })
+                if (item.value == this.selected) title = item.text;
+            });
             this.form.multilingualism.push({
                 language: this.selected,
                 title: title,
                 active: false,
                 content: {
-                    title: '',
-                    content: '',
-                    remark: ''
+                    title: "",
+                    content: "",
+                    remark: ""
                 }
-            })
-            this.centerDialogVisible = false
+            });
+            this.centerDialogVisible = false;
         },
         selectedLang() {
             for (let i = 0; i < this.newLang.length; i++) {
                 if (!this.newLang[i].disabled) {
-                    this.selected = this.newLang[i].value
-                    return
+                    this.selected = this.newLang[i].value;
+                    return;
                 }
             }
         }
     },
     watch: {
-        'form.newsType': {
+        "form.newsType": {
             handler(n) {
                 if (n == 56) {
-                    this.typeIndex = 1
-                    this.isUpdateNotice = true
+                    this.typeIndex = 1;
+                    this.isUpdateNotice = true;
                 } else if (n == 23) {
-                    this.typeIndex = 2
-                    this.isUpdateNotice = false
+                    this.typeIndex = 2;
+                    this.isUpdateNotice = false;
                 } else if (n == 24) {
-                    this.typeIndex = 3
-                    this.isUpdateNotice = false
+                    this.typeIndex = 3;
+                    this.isUpdateNotice = false;
                 } else if (n == 99) {
-                    this.typeIndex = 4
-                    this.isUpdateNotice = false
+                    this.typeIndex = 4;
+                    this.isUpdateNotice = false;
                 } else if (n == 21 || n == 22) {
-                    this.typeIndex = 5
-                    this.isUpdateNotice = false
+                    this.typeIndex = 5;
+                    this.isUpdateNotice = false;
                 } else {
-                    this.typeIndex = 6
-                    this.isUpdateNotice = false
+                    this.typeIndex = 6;
+                    this.isUpdateNotice = false;
                 }
             },
             immediate: true
@@ -734,57 +780,62 @@ export default {
     },
     computed: {
         newLang() {
-            let newLang = []
+            let newLang = [];
             newLang = this.language.map(item => {
                 return {
                     ...item
-                }
-            })
-            newLang.shift()
+                };
+            });
+            newLang.shift();
             newLang.forEach(item => {
-                item.disabled = false
-            })
+                item.disabled = false;
+            });
             this.form.multilingualism.forEach(item => {
                 newLang.forEach(obj => {
-                    if (obj.value == item.language)
-                        obj.disabled = true
-                })
-            })
-            return newLang
+                    if (obj.value == item.language) obj.disabled = true;
+                });
+            });
+            return newLang;
         },
         choosingButton() {
             return this.form.multilingualism.length !== this.newLang.length;
         },
         lang() {
-            return this.form.multilingualism[this.currentIndex].language
+            return this.form.multilingualism[this.currentIndex].language;
         },
         currentIndex() {
-            return this.form.multilingualism.findIndex(item => item.active)
+            return this.form.multilingualism.findIndex(item => item.active);
         },
         titleValue: {
             get() {
-                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.title : ''
+                return this.currentIndex > -1 ?
+                    this.form.multilingualism[this.currentIndex].content.title :
+                    "";
             },
             set(val) {
-                this.form.multilingualism[this.currentIndex].content.title = val
+                this.form.multilingualism[this.currentIndex].content.title = val;
             }
         },
         conValue: {
             get() {
-                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.content : ''
+                return this.currentIndex > -1 ?
+                    this.form.multilingualism[this.currentIndex].content.content :
+                    "";
             },
             set(val) {
-                this.form.multilingualism[this.currentIndex].content.content = val
+                this.form.multilingualism[this.currentIndex].content.content = val;
             }
         },
         remarkValue: {
             get() {
-                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.remark : ''
+                return this.currentIndex > -1 ?
+                    this.form.multilingualism[this.currentIndex].content.remark :
+                    "";
             },
             set(val) {
-                this.form.multilingualism[this.currentIndex].content.remark = val
+                this.form.multilingualism[this.currentIndex].content.remark = val;
             }
         }
     }
-}
+};
 </script>

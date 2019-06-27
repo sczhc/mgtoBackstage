@@ -4,14 +4,16 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build --dest=dist",
+    "lint": "vue-cli-service lint",
+    "lib": "vue-cli-service build --target lib --name test src/pack/index.js"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.21",
     "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
+    "sortablejs": "^1.10.0-rc3",
     "uglifyjs-webpack-plugin": "^2.1.3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"
