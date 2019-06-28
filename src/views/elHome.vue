@@ -283,10 +283,10 @@
             <el-col :span="24">
                 <div class="form-actions">
                     <template v-if="types === 'create'">
-                        <el-button type="primary" @click="onSubmit">創建</el-button>
+                        <el-button type="primary" class="btn-primary" @click="onSubmit">創建</el-button>
                     </template>
                     <template v-else>
-                        <el-button type="primary" @click="onSubmit">更新</el-button>
+                        <el-button type="primary" class="btn-primary" @click="onSubmit">更新</el-button>
                     </template>
                     <a class="btn btn-back" href="/admintools/news_draft/">返回</a>
                     <template v-if="types !== 'create'">

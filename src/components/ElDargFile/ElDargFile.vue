@@ -32,11 +32,11 @@
                             <label><span class="mandatory">*</span>附件類型</label>
                         </template>
                         <el-select v-model="imgTyp">
-                            <option value="38" label="圖片"></option>
-                            <option value="37" label="文件"></option>
-                            <option value="39" label="影片"></option>
-                            <option value="40" label="社交渠道"></option>
-                            <option value="41" label="其他"></option>
+                            <el-option value="38" label="圖片"></el-option>
+                            <el-option value="37" label="文件"></el-option>
+                            <el-option value="39" label="影片"></el-option>
+                            <el-option value="40" label="社交渠道"></el-option>
+                            <el-option value="41" label="其他"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -69,25 +69,26 @@
                                     <li v-for="(item,index) in language" :key="`lang-list-${index}`" @click="handleChangeLang(item)" :class="[item.active? 'lang-active':'']">{{item.text}}</li>
                                 </ul>
                             </div>
-                            <div class="content-list">
-                                <b-row>
-                                    <el-col :span="24">
-                                        <el-form-item>
-                                            <template slot="label">
-                                                <label><span class="mandatory">*</span>Title</label>
-                                            </template>
-                                            <el-input v-model="titleEdit"></el-input>
-                                        </el-form-item>
-                                        <el-form-item>
-                                            <template slot="label">
-                                                <label><span class="mandatory">*</span>Summary</label>
-                                            </template>
-                                            <el-input v-model="summaryEdit"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </b-row>
-                            </div>
+                            <!-- <div class="content-list">
+                            </div> -->
                         </div>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item>
+                        <template slot="label">
+                            <label><span class="mandatory">*</span>Title</label>
+                        </template>
+                        <el-input v-model="titleEdit"></el-input>
+                    </el-form-item>
+
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item>
+                        <template slot="label">
+                            <label><span class="mandatory">*</span>Summary</label>
+                        </template>
+                        <el-input v-model="summaryEdit"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
