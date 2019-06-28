@@ -8,7 +8,7 @@
 const CKEDITOR = window.CKEDITOR
 
 export default {
-    name: 'ckeditor4',
+    name: 'WCkeditor',
     props: {
         value: String,
         id: {

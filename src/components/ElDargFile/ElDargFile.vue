@@ -6,7 +6,7 @@
                 <!-- <li class="img-slide" v-for="(item,index) in imgs" :key="`img-slide-${index}`">{{item.text}}</li> -->
                 <li class="img-slide" v-for="(item,index) in imgs" :key="`img-slide-${index}`">
                     <div class="tools-top">
-                        <b-button @click="handleModal"><i class="el-icon-edit"></i>編輯</b-button>
+                        <el-button @click="handleModal"><i class="el-icon-edit"></i>編輯</el-button>
                     </div>
                     <img :src="item.url">
                     <div class="text-inner">
@@ -23,25 +23,25 @@
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </div>
     </div>
-    <b-modal v-model="imgModal" id="img-edit-modal" size="lg" title="編輯">
-        <b-form @submit="onSubmit">
-            <b-row>
-                <b-col md="12">
-                    <b-form-group :label-cols="2">
+    <el-dialog :visible.sync="imgModal" title="編輯">
+        <el-form label-width="100px">
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item>
                         <template slot="label">
                             <label><span class="mandatory">*</span>附件類型</label>
                         </template>
-                        <b-form-select v-model="imgTyp">
-                            <option value="38">圖片</option>
-                            <option value="37">文件</option>
-                            <option value="39">影片</option>
-                            <option value="40">社交渠道</option>
-                            <option value="41">其他</option>
-                        </b-form-select>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="2" label="文件">
+                        <el-select v-model="imgTyp">
+                            <option value="38" label="圖片"></option>
+                            <option value="37" label="文件"></option>
+                            <option value="39" label="影片"></option>
+                            <option value="40" label="社交渠道"></option>
+                            <option value="41" label="其他"></option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="文件">
                         <label class="ace-file-input">
                             <input type="file" class="modalFile" ref="modalFile" @change="handleModalChange" accept="application/pdf,application/octet-stream,image/png,image/jpeg,image/pjpeg,image/gif,image/bmp,text/plain,text/srt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,video/3gpp2,video/mp4,audio/mpeg,audio/mp3,video/mp3,video/3gpp,video/mp4v-es,video/x-ms-asf,video/x-ms-wmv,video/mng,video/x-mng,video/x-ms-wma,application/x-gzip,application/xml,text/xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                             <span class="ace-file-container" :data-title="fileText">
@@ -59,10 +59,10 @@
                         <p class="text-primary">
                             允許上傳pdf,octet-stream,png,jpeg,pjpeg,gif,bmp,plain,srt,vnd.openxmlformats-officedocument.spreadsheetml.sheet,vnd.ms-excel,3gpp2,mp4,mpeg,mp3,mp3,3gpp,mp4v-es,x-ms-asf,x-ms-wmv,mng,x-mng,x-ms-wma,x-gzip,xml,xml,msword,vnd.openxmlformats-officedocument.wordprocessingml.document的文件，文件大小限制100M
                         </p>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item>
                         <div class="language-content">
                             <div class="lang-list">
                                 <ul>
@@ -71,38 +71,37 @@
                             </div>
                             <div class="content-list">
                                 <b-row>
-                                    <b-col md="12">
-                                        <b-form-group :label-cols="2">
+                                    <el-col :span="24">
+                                        <el-form-item>
                                             <template slot="label">
                                                 <label><span class="mandatory">*</span>Title</label>
                                             </template>
-                                            <b-input v-model="titleEdit"></b-input>
-                                        </b-form-group>
-                                        <b-form-group :label-cols="2">
+                                            <el-input v-model="titleEdit"></el-input>
+                                        </el-form-item>
+                                        <el-form-item>
                                             <template slot="label">
                                                 <label><span class="mandatory">*</span>Summary</label>
                                             </template>
-                                            <b-input v-model="summaryEdit"></b-input>
-                                        </b-form-group>
-                                    </b-col>
+                                            <el-input v-model="summaryEdit"></el-input>
+                                        </el-form-item>
+                                    </el-col>
                                 </b-row>
                             </div>
                         </div>
-                    </b-form-group>
-                </b-col>
-            </b-row>
-        </b-form>
-        <template slot="modal-footer">
-            <b-button @click="handleClose">關閉</b-button>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <template slot="footer">
+            <el-button @click="handleClose">關閉</el-button>
         </template>
-    </b-modal>
+    </el-dialog>
 </div>
 </template>
 
 <script>
 import Sortable from 'sortablejs';
 export default {
-    name:'DargFile',
     props: {
         // imgList: Array,
         accept: '',
@@ -115,7 +114,7 @@ export default {
         return {
             imgs: [],
             imgModal: false,
-            imgTyp: 38,
+            imgTyp: '38',
             fileText: '選擇文件',
             fileBrowse: '瀏覽 ...',
             isUpload: false,

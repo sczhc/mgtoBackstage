@@ -352,6 +352,7 @@ import Vue from "vue";
 import WizEditor from "@/pack/WCkeditor";
 import DargFile from "@/pack/DargFile";
 export default {
+    name:'wiz-form',
     components: {
         WizEditor,
         DargFile

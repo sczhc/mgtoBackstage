@@ -1,243 +1,236 @@
 <template>
 <div class="mgto-content">
-    <b-form @submit="onSubmit">
-        <b-row>
-            <b-col md="12">
-                <b-form-group :label-cols="3">
+    <el-form ref="form" :model="form" :rules="rules" label-width="200px">
+        <el-row>
+            <el-col :span="24">
+                <el-form-item>
                     <template slot="label">
-                        <label><span class="mandatory">*</span>類別</label>
+                        <label><span class="mandatory">*</span></label>
                     </template>
-                    <b-form-select v-model="form.newsType" v-validate="'required'" name="NewsType" :class="errors.has('NewsType') && 'is-invalid'">
-                        <option value="56">資料夾</option>
-                        <option value="21">新聞公佈</option>
-                        <option value="22">講辭</option>
-                        <option value="23">推廣活動</option>
-                        <option value="24">圖片</option>
-                        <option value="25">宣傳片</option>
-                        <option value="26">剪報</option>
-                        <option value="27">參考資料</option>
-                        <option value="28">區域合作</option>
-                        <option value="46">旅遊快訊</option>
-                        <option value="57">澳門旅遊</option>
-                        <option value="99">旅遊快訊印刷版</option>
-                        <option value="100">業界新聞</option>
-                    </b-form-select>
-                    <b-form-invalid-feedback :state="errors.has('NewsType')">
-                        {{errors.first('NewsType')}}
-                    </b-form-invalid-feedback>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3">
+                    <el-select v-model="form.newsType" @change="handleNews">
+                        <el-option value="56" label="資料夾"></el-option>
+                        <el-option value="21" label="新聞公佈"></el-option>
+                        <el-option value="22" label="講辭"></el-option>
+                        <el-option value="23" label="推廣活動"></el-option>
+                        <el-option value="24" label="圖片"></el-option>
+                        <el-option value="25" label="宣傳片"></el-option>
+                        <el-option value="26" label="剪報"></el-option>
+                        <el-option value="27" label="參考資料"></el-option>
+                        <el-option value="28" label="區域合作"></el-option>
+                        <el-option value="46" label="旅遊快訊"></el-option>
+                        <el-option value="57" label="澳門旅遊"></el-option>
+                        <el-option value="99" label="旅遊快訊印刷版"></el-option>
+                        <el-option value="100" label="業界新聞"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item>
                     <template slot="label">
                         <label><span class="mandatory">*</span>審批狀態</label>
                     </template>
                     <el-input v-model="form.statusShow" :disabled="disabled"></el-input>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="上線時間">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="上線時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.onlineAt" type="datetime"></el-date-picker>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="下線時間">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="下線時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.offlineAt" type="datetime"></el-date-picker>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3">
-                    <template slot="label">
-                        <label><span class="mandatory">*</span>日期</label>
-                    </template>
-                    <el-date-picker prefix-icon="el-icon-date" v-validate="'required'" name="dateAt" :class="errors.has('dateAt') && 'is-invalid'" v-model="form.dateAt" type="datetime"></el-date-picker>
-                    <b-form-invalid-feedback :state="errors.has('dateAt')">
-                        {{errors.first('dateAt')}}
-                    </b-form-invalid-feedback>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="">
-                    <b-form-checkbox v-model="form.showDate">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item prop="dateAt" label="日期">
+                    <!-- <template slot="label">
+                        <label><span class="mandatory">*</span></label>
+                    </template> -->
+                    <el-date-picker prefix-icon="el-icon-date" v-model="form.dateAt" type="datetime"></el-date-picker>
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="">
+                    <el-checkbox v-model="form.showDate">
                         <span>是否只顯示日期</span>
-                    </b-form-checkbox>
-                    <b-form-checkbox v-model="form.showInHomePage">
+                    </el-checkbox>
+                    <el-checkbox v-model="form.showInHomePage">
                         <span>首頁資料夾顯示</span>
-                    </b-form-checkbox>
+                    </el-checkbox>
                     <template v-if="isUpdateNotice">
-                        <b-form-checkbox v-model="form.isSendUpdateNotice">
+                        <el-checkbox v-model="form.isSendUpdateNotice">
                             <span>是否發出更新通知</span>
-                        </b-form-checkbox>
+                        </el-checkbox>
                     </template>
-                </b-form-group>
-            </b-col>
+                </el-form-item>
+            </el-col>
             <template v-if="typeIndex == 1">
-                <b-col md="12">
-                    <b-form-group :label-cols="3">
-                        <template slot="label">
-                            <label><span class="mandatory">*</span>通知備註</label>
-                        </template>
-                        <b-form-textarea id="textarea-default" v-model="form.updateNoticeRemarks" v-validate="'required'" name="updateNoticeRemarks" :class="errors.has('updateNoticeRemarks') && 'is-invalid'"></b-form-textarea>
-                        <b-form-invalid-feedback :state="errors.has('updateNoticeRemarks')">
-                            {{errors.first('updateNoticeRemarks')}}
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                </b-col>
+                <el-col :span="24">
+                    <el-form-item label="通知備註" prop="updateNoticeRemarks">
+                        <!-- <template slot="label">
+                            <label><span class="mandatory">*</span></label>
+                        </template> -->
+                        <el-input type="textarea" v-model="form.updateNoticeRemarks"></el-input>
+                    </el-form-item>
+                </el-col>
             </template>
             <template v-if="typeIndex == 5">
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="國家地區">
-                        <b-form-select v-model="form.Country" :options="countrys"></b-form-select>
-                    </b-form-group>
-                </b-col>
+                <el-col :span="24">
+                    <el-form-item label="國家地區">
+                        <el-select v-model="form.Country">
+                            <el-option v-for="(item,index) in countrys" :key="`countrys-${index}`" :label="item.text" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
             </template>
             <template v-if="typeIndex == 2">
-                <b-col md="12">
-                    <b-form-group :label-cols="3">
+                <el-col :span="24">
+                    <el-form-item>
                         <template slot="label">
                             <label><span class="mandatory">*</span>發佈者在活動中的角色</label>
                         </template>
-                        <b-form-select v-model="form.extra.newsRole">
-                            <option value="0">參與方</option>
-                            <option value="1">支持方</option>
-                            <option value="2">協辦方</option>
-                            <option value="3">主辦方</option>
-                        </b-form-select>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="開始時間">
+                        <el-select v-model="form.extra.newsRole">
+                            <el-option value="0" label="參與方"></el-option>
+                            <el-option value="1" label="支持方"></el-option>
+                            <el-option value="2" label="協辦方"></el-option>
+                            <el-option value="3" label="主辦方"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="開始時間">
                         <el-date-picker prefix-icon="el-icon-date" v-model="form.extra.beginTime" type="datetime"></el-date-picker>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="結束時間">
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="結束時間">
                         <el-date-picker prefix-icon="el-icon-date" v-model="form.extra.endTime" type="datetime"></el-date-picker>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="相關網頁鏈接">
-                        <b-form-input v-model="form.extra.url"></b-form-input>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="性質">
-                        <b-form-select v-model="form.extra.actNature">
-                            <option value=""></option>
-                            <option value="0">海外推廣 - 協會性質</option>
-                            <option value="1">海外推廣 - 貿易會</option>
-                            <option value="2">海外推廣 - 貿易會 (B to C)</option>
-                            <option value="3">海外推廣 - 貿易會 (B to B)</option>
-                            <option value="4">海外推廣 - 貿易會 (B to B/C)</option>
-                            <option value="5">海外推廣 - 公關活動</option>
-                            <option value="6">海外推廣 - 講座</option>
-                            <option value="7">海外推廣 - 洽談會</option>
-                            <option value="8">海外推廣 - 講座及洽談會</option>
-                            <option value="9">海外推廣 - 路展</option>
-                            <option value="10">海外推廣 - 特別活動</option>
-                            <option value="11">海外推廣 - 其他</option>
-                        </b-form-select>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="參加團體">
-                        <b-form-textarea id="textarea-default" v-model="form.extra.joinGroup"></b-form-textarea>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="截止報名日期">
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="相關網頁鏈接">
+                        <el-input v-model="form.extra.url"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="性質">
+                        <el-select v-model="form.extra.actNature">
+                            <el-option value=""></el-option>
+                            <el-option value="0" label="海外推廣 - 協會性質"></el-option>
+                            <el-option value="1" label="海外推廣 - 貿易會"></el-option>
+                            <el-option value="2" label="海外推廣 - 貿易會 (B to C)"></el-option>
+                            <el-option value="3" label="海外推廣 - 貿易會 (B to B)"></el-option>
+                            <el-option value="4" label="海外推廣 - 貿易會 (B to B/C)"></el-option>
+                            <el-option value="5" label="海外推廣 - 公關活動"></el-option>
+                            <el-option value="6" label="海外推廣 - 講座"></el-option>
+                            <el-option value="7" label="海外推廣 - 洽談會"></el-option>
+                            <el-option value="8" label="海外推廣 - 講座及洽談會"></el-option>
+                            <el-option value="9" label="海外推廣 - 路展"></el-option>
+                            <el-option value="10" label="海外推廣 - 特別活動"></el-option>
+                            <el-option value="11" label="海外推廣 - 其他"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="參加團體">
+                        <el-input type="textarea" id="textarea-default" v-model="form.extra.joinGroup"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="截止報名日期">
                         <el-date-picker prefix-icon="el-icon-date" v-model="form.extra.RegDeadline" type="datetime"></el-date-picker>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="eService報名關聯id">
-                        <b-form-input v-model="form.extra.eService" type="number"></b-form-input>
-                    </b-form-group>
-                </b-col>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="eService報名關聯id">
+                        <el-input v-model="form.extra.eService" type="number"></el-input>
+                    </el-form-item>
+                </el-col>
             </template>
             <template v-if="typeIndex == 3">
-                <b-col md="12">
-                    <b-form-group :label-cols="3">
+                <el-col :span="24">
+                    <el-form-item>
                         <template slot="label">
                             <label><span class="mandatory">*</span>圖片方向</label>
                         </template>
-                        <b-form-select v-model="form.extra.picDirection">
-                            <option value="transverse">橫向</option>
-                            <option value="longitudinal">縱向</option>
-                        </b-form-select>
-                    </b-form-group>
-                </b-col>
-                <b-col md="12">
-                    <b-form-group :label-cols="3" label="">
-                        <b-form-checkbox v-model="form.extra.picHasPersion">
+                        <el-select v-model="form.extra.picDirection">
+                            <el-option value="transverse" label="橫向"></el-option>
+                            <el-option value="longitudinal" label="縱向"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="">
+                        <el-checkbox v-model="form.extra.picHasPersion">
                             <span>是否有人物</span>
-                        </b-form-checkbox>
-                    </b-form-group>
-                </b-col>
+                        </el-checkbox>
+                    </el-form-item>
+                </el-col>
             </template>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="相關新聞">
+            <el-col :span="24">
+                <el-form-item label="相關新聞">
                     <el-select v-model="form.news" filterable multiple>
                         <el-option v-for="item in news" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                         <div slot="empty" class="noResults">No results found</div>
-                        <!-- <div slot="empty">Please enter 1 or more characters</div> -->
                     </el-select>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="創建時間">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="創建時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.createdAt" type="datetime" :disabled="disabled"></el-date-picker>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="更新時間">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="更新時間">
                     <el-date-picker prefix-icon="el-icon-date" v-model="form.updatedAt" type="datetime" :disabled="disabled"></el-date-picker>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="更新者">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="更新者">
                     <el-input v-model="form.updatedBy" :disabled="disabled"></el-input>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="發佈者">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="發佈者">
                     <el-input v-model="form.createdByShow" :disabled="disabled"></el-input>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3" label="審批者">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item label="審批者">
                     <el-input v-model="form.approvedByShow" :disabled="disabled"></el-input>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item>
                     <template slot="label">
                         <label><span class="mandatory">*</span>預設語言</label>
                     </template>
-                    <b-form-select v-model="form.indicator" :options="language">
-                    </b-form-select>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="3">
+                    <el-select v-model="form.indicator">
+                        <el-option v-for="(item,index) in language" :key="`lang-${index}`" :label="item.text" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
+                <el-form-item>
                     <template slot="label">
                         <label><span class="mandatory">*</span>Requested New Tags</label>
                     </template>
-                    <b-form-input v-model="form.requestedTags"></b-form-input>
-                </b-form-group>
-            </b-col>
+                    <el-input v-model="form.requestedTags"></el-input>
+                </el-form-item>
+            </el-col>
             <template v-if="typeIndex == 4">
-                <b-col md="12">
-                    <b-form-group :label-cols="3">
+                <el-col :span="24">
+                    <el-form-item>
                         <template slot="label">
                             <label><span class="mandatory">*</span>對應刊號</label>
                         </template>
                         <el-date-picker v-model="form.datePicker" type="date"></el-date-picker>
-                    </b-form-group>
-                </b-col>
+                    </el-form-item>
+                </el-col>
             </template>
-            <b-col md="12">
+            <el-col :span="24">
                 <div class="multilingualism">
                     <div class="language">
                         <div @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
@@ -245,91 +238,75 @@
                     </div>
                     <div class="multilin-text">
                         <div class="title-mult">
-                            <b-row>
-                                <b-col md="2">
+                            <el-row>
+                                <el-col :span="4">
                                     <p>標題</p>
-                                </b-col>
-                                <b-col md="10">
+                                </el-col>
+                                <el-col :span="20">
                                     <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
-                                </b-col>
-                            </b-row>
+                                </el-col>
+                            </el-row>
                         </div>
                         <div class="content-mult">
-                            <b-row>
-                                <b-col md="2">
+                            <el-row>
+                                <el-col :span="4">
                                     <p>內容</p>
-                                </b-col>
-                                <b-col md="10">
+                                </el-col>
+                                <el-col :span="20">
                                     <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
-                                </b-col>
-                            </b-row>
+                                </el-col>
+                            </el-row>
                         </div>
                         <div class="remark-mult">
-                            <b-row>
-                                <b-col md="2">
+                            <el-row>
+                                <el-col :span="4">
                                     <p> 內部備註</p>
-                                </b-col>
-                                <b-col md="10">
-                                    <textarea id="news_draft_translations_kr_summary" v-model="remarkValue"></textarea>
-                                </b-col>
-                            </b-row>
+                                </el-col>
+                                <el-col :span="20">
+                                    <el-input type="textarea" id="news_draft_translations_kr_summary" v-model="remarkValue"></el-input>
+                                </el-col>
+                            </el-row>
                         </div>
                     </div>
                 </div>
-            </b-col>
-            <b-col md="12">
-                <b-form-group :label-cols="2">
+            </el-col>
+            <el-col :span="24">
+                <el-form-item>
                     <template slot="label">
                         <label><span class="mandatory">*</span>附件</label>
                     </template>
                     <div class="wiz-fileInput">
                         <darg-file :newLang="dargLang"></darg-file>
-                        <!-- <div class="fileHead">
-                            <div class="uploadBtn">
-                                <b-button class="btn-upload-file"><i class="el-icon-upload"></i>開始上傳</b-button>
-                                <b-button class="btn-delete-file"><i class="el-icon-delete"></i>刪除文件</b-button>
-                                <b-form-checkbox id="checkbox" v-model="deleteFile" name="checkbox">刪除所有文件</b-form-checkbox>
-                                <b-button aria-controls="collapse" @click="showCollapse = !showCollapse" class="btn-upload-coolapse">
-                                    <i :class="showCollapse? 'el-icon-arrow-up':'el-icon-arrow-down'"></i>
-                                </b-button>
-                            </div>
-                        </div>
-                        <b-collapse id="collapse" class="upload-collapse-content" v-model="showCollapse">
-                            <b-card>
-                                <input-file></input-file>
-                            </b-card>
-                        </b-collapse> -->
                     </div>
-                </b-form-group>
-            </b-col>
-            <b-col md="12">
+                </el-form-item>
+            </el-col>
+            <el-col :span="24">
                 <div class="form-actions">
                     <template v-if="types === 'create'">
-                        <b-button squared variant="primary" type="submit">創建</b-button>
+                        <el-button type="primary" @click="onSubmit">創建</el-button>
                     </template>
                     <template v-else>
-                        <b-button squared variant="primary" type="submit">更新</b-button>
+                        <el-button type="primary" @click="onSubmit">更新</el-button>
                     </template>
                     <a class="btn btn-back" href="/admintools/news_draft/">返回</a>
                     <template v-if="types !== 'create'">
-                        <b-button class="btn-preview">預覽</b-button>
+                        <el-button class="btn-preview">預覽</el-button>
                     </template>
                     <template v-if="types === 'update'">
-                        <b-button class="btn-approval">提交審批</b-button>
-                        <b-button class="btn-release">提交直接發佈</b-button>
+                        <el-button class="btn-approval">提交審批</el-button>
+                        <el-button class="btn-release">提交直接發佈</el-button>
                     </template>
                 </div>
-            </b-col>
-        </b-row>
-    </b-form>
+            </el-col>
+        </el-row>
+    </el-form>
+
     <!-- 弹窗 -->
     <el-dialog :visible.sync="centerDialogVisible">
         <div slot="title">選擇增加語言</div>
-        <b-form-select v-model="selected">
-            <template v-for="(item,index) in newLang">
-                <option :key="`lang_${index}`" :disabled="item.disabled" :value="item.value">{{item.text}}</option>
-            </template>
-        </b-form-select>
+        <el-select v-model="selected">
+            <el-option v-for="(item,index) in newLang" :key="`lang_${index}`" :disabled="item.disabled" :value="item.value" :label="item.text"></el-option>
+        </el-select>
         <div slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="choiceLang">确 定</el-button>
@@ -341,7 +318,7 @@
 <script>
 import Vue from 'vue';
 import WizEditor from '@/components/WizEditor'
-import DargFile from '@/components/DargFile'
+import DargFile from '@/components/ElDargFile'
 export default {
     components: {
         WizEditor,
@@ -358,7 +335,7 @@ export default {
             deleteFile: false,
             disabled: true,
             form: {
-                newsType: 56,
+                newsType: '56',
                 statusShow: 'DRAFT',
                 onlineAt: '',
                 offlineAt: '',
@@ -369,7 +346,7 @@ export default {
                 updateNoticeRemarks: '',
                 Country: '',
                 extra: {
-                    newsRole: 0,
+                    newsRole: '0',
                     beginTime: '',
                     endTime: '',
                     url: '',
@@ -672,18 +649,32 @@ export default {
             typeIndex: 1,
             isUpdateNotice: true,
             fileList: [],
-            showCollapse: true
+            showCollapse: true,
+            rules: {
+                newsType: [{
+                    required: true,
+                    message: '必須填寫',
+                    trigger: 'blur'
+                }],
+                dateAt: [{
+                    required: true,
+                    message: '必須填寫',
+                    trigger: 'blur'
+                }],
+                updateNoticeRemarks: [{
+                    required: true,
+                    message: '必須填寫',
+                    trigger: 'blur'
+                }]
+            }
         }
     },
     methods: {
         onSubmit(evt) {
             evt.preventDefault()
-            let params = {
-                ...this.form
-            }
-
-            this.$validator.validate().then(validate => {
-                if (!validate) this.errorScoll()
+            this.$refs.form.validate(valid => {
+                console.log(valid)
+                if (!valid) this.errorScoll()
             })
         },
         errorScoll() {
@@ -712,6 +703,9 @@ export default {
         handClick(item) {
             this.form.multilingualism.forEach(obj => obj.active = false)
             item.active = true;
+        },
+        handleNews() {
+            this.$refs.form.clearValidate()
         },
         handAdd() {
             this.selectedLang()
@@ -747,19 +741,19 @@ export default {
     watch: {
         'form.newsType': {
             handler(n) {
-                if (n == 56) {
+                if (n == '56') {
                     this.typeIndex = 1
                     this.isUpdateNotice = true
-                } else if (n == 23) {
+                } else if (n == '23') {
                     this.typeIndex = 2
                     this.isUpdateNotice = false
-                } else if (n == 24) {
+                } else if (n == '24') {
                     this.typeIndex = 3
                     this.isUpdateNotice = false
-                } else if (n == 99) {
+                } else if (n == '99') {
                     this.typeIndex = 4
                     this.isUpdateNotice = false
-                } else if (n == 21 || n == 22) {
+                } else if (n == '21' || n == '22') {
                     this.typeIndex = 5
                     this.isUpdateNotice = false
                 } else {
