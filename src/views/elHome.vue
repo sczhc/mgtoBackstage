@@ -1,11 +1,11 @@
 <template>
 <div class="mgto-content">
-    <el-form ref="form" :model="form" :rules="rules" label-width="200px">
+    <el-form ref="form" :model="form" :rules="rules" :label-width="resizeWidth >= 768 ? '200px' : ''">
         <el-row>
             <el-col :span="24">
                 <el-form-item>
                     <template slot="label">
-                        <label><span class="mandatory">*</span></label>
+                        <label><span class="mandatory">*</span>類別</label>
                     </template>
                     <el-select v-model="form.newsType" @change="handleNews">
                         <el-option value="56" label="資料夾"></el-option>
@@ -284,9 +284,9 @@
                                 <div slot="title" @click="stopEvent">
                                     <el-button @click="startUpload">開始上傳</el-button>
                                     <el-button @click="deletePage">刪除</el-button>
-                                    <el-checkbox v-model="deleteWhole" @click="deleteAll">刪除所有文件</el-checkbox>
+                                    <el-checkbox v-model="deleteWhole" @click="deleteAll" @change="deleteChange">刪除所有文件</el-checkbox>
                                 </div>
-                                <darg-file :newLang="dargLang"></darg-file>
+                                <darg-file :newLang="dargLang" :imgList="imgList" @imgInput="imgInput" @checked="checkedList" :afferentList="afferentList"></darg-file>
                             </el-collapse-item>
                         </el-collapse>
                     </div>
@@ -331,6 +331,9 @@
 import Vue from 'vue';
 import WizEditor from '@/components/WizEditor'
 import DargFile from '@/components/ElDargFile'
+
+let checkList = []
+
 export default {
     components: {
         WizEditor,
@@ -666,21 +669,25 @@ export default {
                 newsType: [{
                     required: true,
                     message: '必須填寫',
-                    trigger: 'blur'
+                    trigger: 'change'
                 }],
                 dateAt: [{
                     required: true,
                     message: '必須填寫',
-                    trigger: 'blur'
+                    trigger: 'change'
                 }],
                 updateNoticeRemarks: [{
                     required: true,
                     message: '必須填寫',
-                    trigger: 'blur'
+                    trigger: 'change'
                 }]
             },
             activeCollapseName: 'dargFile',
-            deleteAll: false
+            deleteWhole: false,
+            deleteList: [],
+            afferentList: [],
+            imgList: [],
+            resizeWidth: window.innerWidth
         }
     },
     methods: {
@@ -750,18 +757,49 @@ export default {
                 }
             }
         },
-        stopEvent(e) {
+        stopEvent(event) {
             event.stopPropagation()
         },
         startUpload(event) {
             event.stopPropagation()
-            console.log('start')
         },
         deletePage(event) {
             event.stopPropagation()
-            console.log('delete')
+            if (checkList.length == 0){
+                this.$notify.error({
+                    message: '請選擇要刪除的項目'
+                })
+            } else {
+                for(let x in this.imgList) {
+                    for(let s in checkList) {
+                        if(this.imgList[x] == checkList[s]) {
+                            this.imgList.splice(x,1)
+                        }
+                    }
+                }
+            }
         },
-        deleteWhole(event) {
+        deleteAll(event) {
+            event.stopPropagation()
+            this.deleteWhole = !this.deleteWhole
+        },
+        deleteChange(val) {
+            if (val) {
+                this.afferentList = this.deleteList
+            } else {
+                this.afferentList = []
+            }
+        },
+        imgInput(val) {
+            for (let x in val) {
+                this.deleteList.push(val[x].name)
+                this.imgList.push(val[x].name)
+            }
+        },
+        checkedList(val) {
+            checkList = val
+            if (val.length == this.deleteList.length && val.length != 0) this.deleteWhole = true
+            else this.deleteWhole = false
         }
     },
     watch: {
@@ -788,13 +826,11 @@ export default {
                 }
             },
             immediate: true
-        },
-        'deleteAll': {
-            handler(n) {
-                if (n) {
-
-                }
-            }
+        }
+    },
+    mounted() {
+        window.onresize = () => {
+            this.resizeWidth = window.innerWidth
         }
     },
     computed: {

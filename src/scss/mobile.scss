@@ -11,3 +11,24 @@
         width: 600px;
     }
 }
+
+@media (max-width: 768px) {
+    .el-form-item__label {
+        float: none;
+    }
+
+    .el-dialog {
+        width: 80%;
+    }
+
+    .wiz-fileInput .dargFile .dargImg ul {
+        justify-content: center;
+
+        li {
+            margin-bottom: 10px;
+        }
+    }
+    .mgto-content .form-actions > *:not(:last-child) {
+        
+    }
+}

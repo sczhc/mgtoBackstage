@@ -86,6 +86,10 @@
     }
 }
 
+.no-margin {
+    margin: 0 !important;
+}
+
 .el-form-item.is-success {
 
     .el-input__inner,
@@ -94,6 +98,18 @@
 
         &:focus {
             border-color: #DCDFE6;
+        }
+    }
+}
+
+.el-picker-panel {
+    .el-button {
+        color: inherit;
+        border: 1px solid #DCDFE6;
+
+        &--text {
+            color: #409EFF;
+            border: none;
         }
     }
 }
@@ -172,12 +188,17 @@
             .el-collapse-item__header {
                 background-color: #82AF6F;
                 height: 32px;
+
                 >div {
+                    width: 95%;
                     height: 32px;
                     display: flex;
                     flex-wrap: wrap;
                     align-items: center;
-                    button,label {
+                    cursor: auto;
+
+                    button,
+                    label {
                         margin-left: 10px;
                     }
                 }

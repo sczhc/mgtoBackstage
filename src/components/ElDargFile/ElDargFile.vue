@@ -1,16 +1,30 @@
 <template>
 <div class="dargFile">
+    {{imgList}}
     <div class="dargImg">
         <div class="img" v-if="imgs">
             <ul>
                 <!-- <li class="img-slide" v-for="(item,index) in imgs" :key="`img-slide-${index}`">{{item.text}}</li> -->
                 <li class="img-slide" v-for="(item,index) in imgs" :key="`img-slide-${index}`">
+                    <a href="javascript:void(0)">
+                        <img :src="item.url">
+                        <div class="text-inner">
+                            <div class="inner">{{item.name}}</div>
+                        </div>
+                    </a>
+                    <div class="tags">
+                        <div class="label-holder">
+                            <label class="no-margin">
+                                <!-- <el-checkbox :value="item.name" v-model="checkedNames"></el-checkbox> -->
+                                <input type="checkbox" :value="item.name" v-model="checkedNames">
+                            </label>
+                        </div>
+                        <div class="label-holder">
+                            <el-button @click="deleteCurrent(index)" icon="el-icon-close"></el-button>
+                        </div>
+                    </div>
                     <div class="tools-top">
                         <el-button @click="handleModal"><i class="el-icon-edit"></i>編輯</el-button>
-                    </div>
-                    <img :src="item.url">
-                    <div class="text-inner">
-                        <div class="inner">{{item.name}}</div>
                     </div>
                 </li>
             </ul>
@@ -81,7 +95,6 @@
                         </template>
                         <el-input v-model="titleEdit"></el-input>
                     </el-form-item>
-
                 </el-col>
                 <el-col :span="24">
                     <el-form-item>
@@ -104,9 +117,16 @@
 import Sortable from 'sortablejs';
 export default {
     props: {
-        // imgList: Array,
+        imgList: {
+            type: Array,
+            default: () => []
+        },
         accept: '',
         newLang: {
+            type: Array,
+            default: () => []
+        },
+        afferentList: {
             type: Array,
             default: () => []
         }
@@ -119,7 +139,8 @@ export default {
             fileText: '選擇文件',
             fileBrowse: '瀏覽 ...',
             isUpload: false,
-            language: []
+            language: [],
+            checkedNames: []
         }
     },
     methods: {
@@ -165,6 +186,9 @@ export default {
                     name: file.name
                 })
             }
+        },
+        deleteCurrent(index) {
+            this.imgs.splice(index, 1)
         },
         onSubmit() {
 
@@ -246,8 +270,24 @@ export default {
         this.language = lang
     },
     watch: {
-        'imgs'(n) {
-            console.log(n)
+        'imgs': {
+            handler(n) {
+                this.$emit('imgInput', n)
+            },
+            deep: true
+        },
+        'checkedNames': {
+            handler(n) {
+                this.$emit('checked', n)
+            },
+            deep: true
+        },
+        'afferentList': {
+            handler(n) {
+                this.checkedNames = n
+            },
+            deep: true,
+            immediate: true
         }
     }
 }
