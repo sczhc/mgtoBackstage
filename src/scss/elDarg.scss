@@ -39,7 +39,7 @@
                 z-index: 1;
                 background-color: rgba(0, 0, 0, 0.55);
 
-                .btn {
+                .el-button {
                     font-size: 12px;
                     margin: 0;
                     padding: 4px;
@@ -116,6 +116,7 @@
         .el-dialog__header {
             border-bottom: 1px solid #e5e5e5;
         }
+
         .el-dialog__body {
             .ace-file-input {
                 display: block;
@@ -258,27 +259,17 @@
             box-shadow: none;
             background-color: #EFF3F8;
 
-            // button {
-            //     background-color: #ABBAC3;
-            //     border-color: #ABBAC3;
+            .el-button {
+                background-color: #ABBAC3 !important;
+                border-color: #ABBAC3;
 
-            //     &:hover {
-            //         background-color: #8B9AA3;
-            //     }
-            // }
+                &:hover,
+                &:active,
+                &:focus {
+                    background-color: #8B9AA3 !important;
+                    border-color: #ABBAC3;
+                }
+            }
         }
-    }
-}
-
-.el-button {
-    border-radius: 0;
-    vertical-align: top;
-    border: 5px solid transparent;
-    font-size: 1rem;
-    color: #fff;
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 !important;
     }
 }

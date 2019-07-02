@@ -231,44 +231,47 @@
                 </el-col>
             </template>
             <el-col :span="24">
-                <div class="multilingualism">
-                    <div class="language">
-                        <div @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
-                        <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
+                <el-form-item>
+                    <div class="multilingualism">
+                        <div class="language">
+                            <div @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
+                            <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
+                        </div>
+                        <div class="multilin-text">
+                            <div class="title-mult">
+                                <el-row>
+                                    <el-col :span="4">
+                                        <p>標題</p>
+                                    </el-col>
+                                    <el-col :span="20">
+                                        <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                            <div class="content-mult">
+                                <el-row>
+                                    <el-col :span="4">
+                                        <p>內容</p>
+                                    </el-col>
+                                    <el-col :span="20">
+                                        <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                            <div class="remark-mult">
+                                <el-row>
+                                    <el-col :span="4">
+                                        <p> 內部備註</p>
+                                    </el-col>
+                                    <el-col :span="20">
+                                        <el-input type="textarea" id="news_draft_translations_kr_summary" v-model="remarkValue"></el-input>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                        </div>
                     </div>
-                    <div class="multilin-text">
-                        <div class="title-mult">
-                            <el-row>
-                                <el-col :span="4">
-                                    <p>標題</p>
-                                </el-col>
-                                <el-col :span="20">
-                                    <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
-                                </el-col>
-                            </el-row>
-                        </div>
-                        <div class="content-mult">
-                            <el-row>
-                                <el-col :span="4">
-                                    <p>內容</p>
-                                </el-col>
-                                <el-col :span="20">
-                                    <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
-                                </el-col>
-                            </el-row>
-                        </div>
-                        <div class="remark-mult">
-                            <el-row>
-                                <el-col :span="4">
-                                    <p> 內部備註</p>
-                                </el-col>
-                                <el-col :span="20">
-                                    <el-input type="textarea" id="news_draft_translations_kr_summary" v-model="remarkValue"></el-input>
-                                </el-col>
-                            </el-row>
-                        </div>
-                    </div>
-                </div>
+                </el-form-item>
+
             </el-col>
             <el-col :span="24">
                 <el-form-item>
@@ -276,7 +279,16 @@
                         <label><span class="mandatory">*</span>附件</label>
                     </template>
                     <div class="wiz-fileInput">
-                        <darg-file :newLang="dargLang"></darg-file>
+                        <el-collapse v-model="activeCollapseName">
+                            <el-collapse-item name="dargFile">
+                                <div slot="title" @click="stopEvent">
+                                    <el-button @click="startUpload">開始上傳</el-button>
+                                    <el-button @click="deletePage">刪除</el-button>
+                                    <el-checkbox v-model="deleteWhole" @click="deleteAll">刪除所有文件</el-checkbox>
+                                </div>
+                                <darg-file :newLang="dargLang"></darg-file>
+                            </el-collapse-item>
+                        </el-collapse>
                     </div>
                 </el-form-item>
             </el-col>
@@ -302,7 +314,7 @@
     </el-form>
 
     <!-- 弹窗 -->
-    <el-dialog :visible.sync="centerDialogVisible">
+    <el-dialog :visible.sync="centerDialogVisible" class="add-modal">
         <div slot="title">選擇增加語言</div>
         <el-select v-model="selected">
             <el-option v-for="(item,index) in newLang" :key="`lang_${index}`" :disabled="item.disabled" :value="item.value" :label="item.text"></el-option>
@@ -666,14 +678,15 @@ export default {
                     message: '必須填寫',
                     trigger: 'blur'
                 }]
-            }
+            },
+            activeCollapseName: 'dargFile',
+            deleteAll: false
         }
     },
     methods: {
         onSubmit(evt) {
             evt.preventDefault()
             this.$refs.form.validate(valid => {
-                console.log(valid)
                 if (!valid) this.errorScoll()
             })
         },
@@ -736,6 +749,19 @@ export default {
                     return
                 }
             }
+        },
+        stopEvent(e) {
+            event.stopPropagation()
+        },
+        startUpload(event) {
+            event.stopPropagation()
+            console.log('start')
+        },
+        deletePage(event) {
+            event.stopPropagation()
+            console.log('delete')
+        },
+        deleteWhole(event) {
         }
     },
     watch: {
@@ -762,6 +788,13 @@ export default {
                 }
             },
             immediate: true
+        },
+        'deleteAll': {
+            handler(n) {
+                if (n) {
+
+                }
+            }
         }
     },
     computed: {

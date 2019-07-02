@@ -23,7 +23,7 @@
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </div>
     </div>
-    <el-dialog :visible.sync="imgModal" title="編輯">
+    <el-dialog class="file-modal" :visible.sync="imgModal" title="編輯">
         <el-form label-width="100px">
             <el-row>
                 <el-col :span="24">
@@ -207,6 +207,9 @@ export default {
                 // 更新items数组
                 let item = _this.imgs.splice(oldIndex, 1)
                 _this.imgs.splice(newIndex, 0, item[0])
+            },
+            onStart(event) {
+                console.log(event)
             }
         })
     },
