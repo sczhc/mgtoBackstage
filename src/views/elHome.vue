@@ -302,7 +302,7 @@
                     </template>
                     <a class="btn btn-back" href="/admintools/news_draft/">返回</a>
                     <template v-if="types !== 'create'">
-                        <el-button class="btn-preview">預覽</el-button>
+                        <el-button class="btn-preview" @click="handlePreview">預覽</el-button>
                     </template>
                     <template v-if="types === 'update'">
                         <el-button class="btn-approval">提交審批</el-button>
@@ -313,7 +313,7 @@
         </el-row>
     </el-form>
 
-    <!-- 弹窗 -->
+    <!-- 弹窗 新增语言 -->
     <el-dialog :visible.sync="centerDialogVisible" class="add-modal">
         <div slot="title">選擇增加語言</div>
         <el-select v-model="selected">
@@ -323,6 +323,16 @@
             <el-button @click="centerDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="choiceLang">确 定</el-button>
         </div>
+    </el-dialog>
+    <!-- 弹窗 新增语言 -->
+    <el-dialog :visible.sync="updateDialogVisible" class="updateDiaglog">
+        <div class="label">
+            <el-tree :data="labelList" show-checkbox node-key="labels" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+            </el-tree>
+        </div>
+    </el-dialog>
+    <!-- 弹窗 预览 -->
+    <el-dialog :visible.sync="previewDialogVisible" class="preview">
     </el-dialog>
 </div>
 </template>
@@ -660,6 +670,8 @@ export default {
                 ['Table', 'Rule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
             ],
             centerDialogVisible: false,
+            previewDialogVisible: false,
+            updateDialogVisible: true,
             selected: '',
             typeIndex: 1,
             isUpdateNotice: true,
@@ -687,7 +699,42 @@ export default {
             deleteList: [],
             afferentList: [],
             imgList: [],
-            resizeWidth: window.innerWidth
+            resizeWidth: window.innerWidth,
+            labelList: [{
+                id: 1,
+                label: '一级 1',
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                    }, {
+                        id: 10,
+                        label: '三级 1-1-2'
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            }, {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }]
         }
     },
     methods: {
@@ -765,15 +812,15 @@ export default {
         },
         deletePage(event) {
             event.stopPropagation()
-            if (checkList.length == 0){
+            if (checkList.length == 0) {
                 this.$notify.error({
                     message: '請選擇要刪除的項目'
                 })
             } else {
-                for(let x in this.imgList) {
-                    for(let s in checkList) {
-                        if(this.imgList[x] == checkList[s]) {
-                            this.imgList.splice(x,1)
+                for (let x in this.imgList) {
+                    for (let s in checkList) {
+                        if (this.imgList[x] == checkList[s]) {
+                            this.imgList.splice(x, 1)
                         }
                     }
                 }
@@ -791,6 +838,8 @@ export default {
             }
         },
         imgInput(val) {
+            this.deleteList = []
+            this.imgList = []
             for (let x in val) {
                 this.deleteList.push(val[x].name)
                 this.imgList.push(val[x].name)
@@ -800,6 +849,9 @@ export default {
             checkList = val
             if (val.length == this.deleteList.length && val.length != 0) this.deleteWhole = true
             else this.deleteWhole = false
+        },
+        handlePreview() {
+
         }
     },
     watch: {

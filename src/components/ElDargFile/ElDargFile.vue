@@ -145,7 +145,6 @@ export default {
     },
     methods: {
         removeFile() {
-            // let obj = document.querySelector('.modalFile')
             let obj = this.$refs.modalFile
             obj.value = ''
             this.fileBrowse = '瀏覽 ...'
@@ -288,7 +287,13 @@ export default {
             },
             deep: true,
             immediate: true
-        }
+        },
+        // 'imgList': {
+        //     handler(n) {
+        //         this.imgs = n
+        //     },
+        //     deep: true
+        // }
     }
 }
 </script>

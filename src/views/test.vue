@@ -1,29 +1,25 @@
 <template>
-    <div>{{title}}
-        <wiz-editor v-model="title"></wiz-editor>
-    </div>
+<div>
+    <PassValue :value="content" @input="setValue"></PassValue>
+    <p>父content : {{content}}</p>
+</div>
 </template>
 
 <script>
-import WizEditor from '@/components/WizEditor'
+import PassValue from '@/components/passValue'
 export default {
-    name: 'ckeditor4',
+    name: 'passValue',
     components: {
-        WizEditor
+        PassValue
     },
     data() {
         return {
             content: 'asdfasdf'
         }
     },
-    computed:{
-        title:{
-            get(){
-                return this.content
-            },
-            set(val){
-                this.content =val
-            }
+    methods: {
+        setValue(val) {
+            this.content = val
         }
     }
 }
