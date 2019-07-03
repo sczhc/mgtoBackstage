@@ -327,7 +327,7 @@
     <!-- 弹窗 新增语言 -->
     <el-dialog :visible.sync="updateDialogVisible" class="updateDiaglog">
         <div class="label">
-            <el-tree :data="labelList" show-checkbox node-key="labels" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+            <el-tree ref="tree" :data="labelList" show-checkbox node-key="labels" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkNode" @check-change="checkChange">
             </el-tree>
         </div>
     </el-dialog>
@@ -852,6 +852,38 @@ export default {
         },
         handlePreview() {
 
+        },
+        nodeClick(data, node) {
+            this.childNodesChange(node)
+            this.parentNodesChange(node)
+        },
+        childNodesChange(node) {
+            let that = this
+            let len = node.childNodes.length;
+            for (let i = 0; i < len; i++) {
+                node.childNodes[i].checked = false;
+                that.childNodesChange(node.childNodes[i]);
+            }
+        },
+        parentNodesChange(node) {
+            let that = this
+            if (node.parent) {
+                for (let key in node) {
+                    if (key == "parent") {
+                        node[key].checked = true;
+                        that.parentNodesChange(node[key]);
+                    }
+                }
+            }
+        },
+        checkNode(data,statu) {
+            this.$refs.tree.setCheckedNodes([{
+                id: data.id,
+                label: data.label
+            }])
+        },
+        checkChange(data,node,self) {
+            console.log(data,node,self)
         }
     },
     watch: {
