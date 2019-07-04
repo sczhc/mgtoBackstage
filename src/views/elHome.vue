@@ -327,7 +327,7 @@
     <!-- 弹窗 新增语言 -->
     <el-dialog :visible.sync="updateDialogVisible" class="updateDiaglog">
         <div class="label">
-            <el-tree ref="tree" :data="labelList" show-checkbox node-key="labels" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkNode" @check-change="checkChange">
+            <el-tree ref="tree" :data="labelList" show-checkbox :node-key="labelsKey" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
             </el-tree>
         </div>
     </el-dialog>
@@ -357,6 +357,7 @@ export default {
     },
     data() {
         return {
+            labelsKey: 'labelKey',
             deleteFile: false,
             disabled: true,
             form: {
@@ -876,14 +877,11 @@ export default {
                 }
             }
         },
-        checkNode(data,statu) {
-            this.$refs.tree.setCheckedNodes([{
-                id: data.id,
-                label: data.label
-            }])
-        },
-        checkChange(data,node,self) {
-            console.log(data,node,self)
+        checkListBox(currentObj, treeStatus) {
+            // let sid = treeStatus.checkedNodes[0].id
+            console.log(this.$refs.tree.getCurrentKey(this.labelsKey))
+            let node = this.$refs.tree.getNode(this.labelsKey)
+            console.log(node)
         }
     },
     watch: {
