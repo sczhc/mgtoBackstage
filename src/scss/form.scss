@@ -170,6 +170,71 @@
         }
     }
 
+    .updateDiaglog {
+        .el-dialog__body {
+            padding: 0;
+
+            .tree-label {
+                .el-tree {
+                    max-height: 250px;
+                    overflow-y: scroll;
+                    margin-bottom: 20px;
+                }
+
+                .tree-button {
+                    button {
+                        padding: 6px 12px;
+                        background-color: #337ab7;
+                        border-color: #2e6da4;
+                        border-width: 2px;
+                        border-radius: 4px;
+
+                        &:hover {
+                            background-color: #286090;
+                            border-color: #204d74;
+                        }
+                    }
+                }
+            }
+
+            .label-addTag {
+                .addTag-header {
+                    background-color: #eee;
+                    color: #fff;
+                    clear: both;
+                    padding: 12px 10px;
+
+                    p {
+                        display: inline-block;
+                    }
+
+                    button {
+                        background-color: #eee;
+                        border-width: 0;
+                        padding: 0;
+                        float: right;
+                        font-size: 15px;
+                    }
+                }
+
+                .addTag-content {
+                    .lang-titles {
+                        ul {
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            li {
+                                padding: 5px 10px;
+                                background-color: #ccc;
+                                color: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     .form-group {
         margin: 15px 0;
 

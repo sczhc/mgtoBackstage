@@ -325,10 +325,94 @@
         </div>
     </el-dialog>
     <!-- 弹窗 新增语言 -->
-    <el-dialog :visible.sync="updateDialogVisible" class="updateDiaglog">
-        <div class="label">
-            <el-tree ref="tree" :data="labelList" show-checkbox :node-key="labelsKey" :expand-on-click-node="false" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
-            </el-tree>
+    <el-dialog title="請選擇標籤" :visible.sync="updateDialogVisible" class="updateDiaglog">
+        <div class="label" v-if="treeResult">
+            <div class="tree-label">
+                <el-tree ref="tree" :data="labelList" show-checkbox :node-key="labelsKey" :expand-on-click-node="false" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
+                </el-tree>
+                <div class="tree-button">
+                    <el-button>確定</el-button>
+                    <el-button @click="treeResult = false">Add Tag</el-button>
+                </div>
+            </div>
+        </div>
+        <div class="label-addTag" v-else>
+            <div class="addTag-header">
+                <p>Add Tag</p>
+                <el-button icon="el-icon-close"></el-button>
+            </div>
+            <div class="addTag-content">
+                <el-form ref="addTagForm" label-width="100px">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="父標籤">
+                                <el-select v-model="form.news" filterable multiple>
+                                    <el-option v-for="item in news" :key="item.value" :label="item.label" :value="item.value">
+                                    </el-option>
+                                    <div slot="empty" class="noResults">No results found</div>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="Is pic tag">
+                                <el-select v-model="addTagForm.isPicTag">
+                                    <el-option :value="0" label="否"></el-option>
+                                    <el-option :value="1" label="是"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="是否為前台搜索標籤">
+                                <el-select v-model="addTagForm">
+                                    <el-option :value="0" label="否"></el-option>
+                                    <el-option :value="1" label="是"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="排序">
+                                <el-input v-model="addTagForm.position" type="number"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label-width="0px">
+                                <div class="lang-titles">
+                                    <ul>
+                                        <li v-for="(item,index) in form.multilingualism" :key="`lang-title-${index}`">{{item.title}}</li>
+                                    </ul>
+                                    <div class="title-list">
+                                        <div class="um-title">
+                                            <el-row>
+                                                <el-col :span="8">標題</el-col>
+                                                <el-col :span="16">
+                                                    <el-input></el-input>
+                                                </el-col>
+                                            </el-row>
+                                        </div>
+                                        <div class="um-interest">
+                                            <el-row>
+                                                <el-col :span="8">你或會有興趣</el-col>
+                                                <el-col :span="16">
+                                                    <el-input></el-input>
+                                                </el-col>
+                                            </el-row>
+                                        </div>
+                                        <div class="um-notes">
+                                            <el-row>
+                                                <el-col :span="8">內部備註</el-col>
+                                                <el-col :span="16">
+                                                    <el-input type="textarea"></el-input>
+                                                </el-col>
+                                            </el-row>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+            </div>
         </div>
     </el-dialog>
     <!-- 弹窗 预览 -->
@@ -357,6 +441,8 @@ export default {
     },
     data() {
         return {
+            input: null,
+            treeResult: false,
             labelsKey: 'labelKey',
             deleteFile: false,
             disabled: true,
@@ -423,6 +509,11 @@ export default {
                         }
                     }
                 ],
+            },
+            addTagForm: {
+                isPicTag: 0,
+                isSearchKey: 0,
+                position: 0
             },
             language: [{
                     value: '',
@@ -878,12 +969,7 @@ export default {
             }
         },
         checkListBox(currentObj, treeStatus) {
-            console.log(currentObj)
-            // let key = this.$refs.tree.getCurrentKey(currentObj)
-            console.log(this.$refs.tree.getNode(currentObj))
-            // let node = this.$refs.tree.getNode(currentObj)
-            // console.log(key,node)
-            // console.log(this.$refs.tree.getCheckedNodes(),this.$refs.tree.getCheckedKeys())
+            // console.log(this.$refs.tree.getNode(currentObj))
         }
     },
     watch: {
