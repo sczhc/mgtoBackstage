@@ -327,7 +327,7 @@
     <!-- 弹窗 新增语言 -->
     <el-dialog :visible.sync="updateDialogVisible" class="updateDiaglog">
         <div class="label">
-            <el-tree ref="tree" :data="labelList" show-checkbox :node-key="labelsKey" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
+            <el-tree ref="tree" :data="labelList" show-checkbox :node-key="labelsKey" :expand-on-click-node="false" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
             </el-tree>
         </div>
     </el-dialog>
@@ -855,20 +855,20 @@ export default {
 
         },
         nodeClick(data, node) {
-            this.childNodesChange(node)
+            // this.childNodesChange(node)
             this.parentNodesChange(node)
         },
-        childNodesChange(node) {
-            let that = this
-            let len = node.childNodes.length;
-            for (let i = 0; i < len; i++) {
-                node.childNodes[i].checked = false;
-                that.childNodesChange(node.childNodes[i]);
-            }
-        },
+        // childNodesChange(node) {
+        //     let that = this
+        //     let len = node.childNodes.length;
+        //     for (let i = 0; i < len; i++) {
+        //         node.childNodes[i].checked = false;
+        //         that.childNodesChange(node.childNodes[i]);
+        //     }
+        // },
         parentNodesChange(node) {
             let that = this
-            if (node.parent) {
+            if (node.parent && node.checked) {
                 for (let key in node) {
                     if (key == "parent") {
                         node[key].checked = true;
@@ -878,10 +878,12 @@ export default {
             }
         },
         checkListBox(currentObj, treeStatus) {
-            // let sid = treeStatus.checkedNodes[0].id
-            console.log(this.$refs.tree.getCurrentKey(this.labelsKey))
-            let node = this.$refs.tree.getNode(this.labelsKey)
-            console.log(node)
+            console.log(currentObj)
+            // let key = this.$refs.tree.getCurrentKey(currentObj)
+            console.log(this.$refs.tree.getNode(currentObj))
+            // let node = this.$refs.tree.getNode(currentObj)
+            // console.log(key,node)
+            // console.log(this.$refs.tree.getCheckedNodes(),this.$refs.tree.getCheckedKeys())
         }
     },
     watch: {
