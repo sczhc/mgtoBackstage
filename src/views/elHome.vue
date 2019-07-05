@@ -383,24 +383,24 @@
                                     <div class="title-list">
                                         <div class="um-title">
                                             <el-row>
-                                                <el-col :span="8">標題</el-col>
-                                                <el-col :span="16">
+                                                <el-col :span="4">標題</el-col>
+                                                <el-col :span="20">
                                                     <el-input></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                         <div class="um-interest">
                                             <el-row>
-                                                <el-col :span="8">你或會有興趣</el-col>
-                                                <el-col :span="16">
+                                                <el-col :span="4">你或會有興趣</el-col>
+                                                <el-col :span="20">
                                                     <el-input></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                         <div class="um-notes">
                                             <el-row>
-                                                <el-col :span="8">內部備註</el-col>
-                                                <el-col :span="16">
+                                                <el-col :span="4">內部備註</el-col>
+                                                <el-col :span="20">
                                                     <el-input type="textarea"></el-input>
                                                 </el-col>
                                             </el-row>
