@@ -1,6 +1,5 @@
 <template>
 <div class="dargFile">
-    {{imgList}}
     <div class="dargImg">
         <div class="img" v-if="imgs">
             <ul>
@@ -15,7 +14,6 @@
                     <div class="tags">
                         <div class="label-holder">
                             <label class="no-margin">
-                                <!-- <el-checkbox :value="item.name" v-model="checkedNames"></el-checkbox> -->
                                 <input type="checkbox" :value="item.name" v-model="checkedNames">
                             </label>
                         </div>
@@ -79,7 +77,7 @@
                     <el-form-item>
                         <div class="language-content">
                             <div class="lang-list">
-                                <ul>
+                                <ul class="language">
                                     <li v-for="(item,index) in language" :key="`lang-list-${index}`" @click="handleChangeLang(item)" :class="[item.active? 'lang-active':'']">{{item.text}}</li>
                                 </ul>
                             </div>

@@ -263,40 +263,40 @@
                 }
             }
 
-            .language-content {
-                .content-list {
-                    padding: 16px 12px;
-                }
+            // .language-content {
+            //     .content-list {
+            //         padding: 16px 12px;
+            //     }
 
-                ul {
-                    display: flex;
-                    flex-wrap: wrap;
-                }
+            //     ul {
+            //         display: flex;
+            //         flex-wrap: wrap;
+            //     }
 
-                li {
-                    border: 1px solid #C5D0DC;
-                    background-color: #F9F9F9;
-                    color: #999;
-                    margin-right: -1px;
-                    line-height: 18px;
-                    position: relative;
-                    overflow: hidden;
-                    cursor: pointer;
-                    padding: 7px 12px 8px;
+            //     li {
+            //         border: 1px solid #C5D0DC;
+            //         background-color: #F9F9F9;
+            //         color: #999;
+            //         margin-right: -1px;
+            //         line-height: 18px;
+            //         position: relative;
+            //         overflow: hidden;
+            //         cursor: pointer;
+            //         padding: 7px 12px 8px;
 
-                    &.lang-active {
-                        color: #576373;
-                        border-color: #C5D0DC;
-                        border-top: 2px solid #4C8FBD;
-                        border-bottom-color: transparent;
-                        background-color: #FFF;
-                        z-index: 1;
-                        line-height: 18px;
-                        margin-top: -1px;
-                        box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
-                    }
-                }
-            }
+            //         &.lang-active {
+            //             color: #576373;
+            //             border-color: #C5D0DC;
+            //             border-top: 2px solid #4C8FBD;
+            //             border-bottom-color: transparent;
+            //             background-color: #FFF;
+            //             z-index: 1;
+            //             line-height: 18px;
+            //             margin-top: -1px;
+            //             box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
+            //         }
+            //     }
+            // }
         }
 
         .el-dialog__footer {

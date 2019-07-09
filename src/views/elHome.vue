@@ -233,14 +233,14 @@
             <el-col :span="24">
                 <el-form-item>
                     <div class="multilingualism">
-                        <div class="language">
-                            <div @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'langAction':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</div>
+                        <ul class="language">
+                            <li @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'lang-active':'']" :data-target="item.language" :key="`multi_${index}`">{{item.title}}</li>
                             <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
-                        </div>
+                        </ul>
                         <div class="multilin-text">
                             <div class="title-mult">
                                 <el-row>
-                                    <el-col :span="4">
+                                    <el-col :span="resizeWidth >= 768 ? 4 : 24">
                                         <p>標題</p>
                                     </el-col>
                                     <el-col :span="20">
@@ -250,7 +250,7 @@
                             </div>
                             <div class="content-mult">
                                 <el-row>
-                                    <el-col :span="4">
+                                    <el-col :span="resizeWidth >= 768 ? 4 : 24">
                                         <p>內容</p>
                                     </el-col>
                                     <el-col :span="20">
@@ -260,7 +260,7 @@
                             </div>
                             <div class="remark-mult">
                                 <el-row>
-                                    <el-col :span="4">
+                                    <el-col :span="resizeWidth >= 768 ? 4 : 24">
                                         <p> 內部備註</p>
                                     </el-col>
                                     <el-col :span="20">
@@ -325,10 +325,10 @@
         </div>
     </el-dialog>
     <!-- 弹窗 新增语言 -->
-    <el-dialog title="請選擇標籤" :visible.sync="updateDialogVisible" class="updateDiaglog">
+    <el-dialog title="請選擇標籤" :visible.sync="updateDialogVisible" class="updateDiaglog" @close="closeUpdate">
         <div class="label" v-if="treeResult">
             <div class="tree-label">
-                <el-tree ref="tree" :data="labelList" show-checkbox :node-key="labelsKey" :expand-on-click-node="false" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
+                <el-tree ref="tree" :data="labelList" show-checkbox node-key="id" :expand-on-click-node="false" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
                 </el-tree>
                 <div class="tree-button">
                     <el-button>確定</el-button>
@@ -339,10 +339,10 @@
         <div class="label-addTag" v-else>
             <div class="addTag-header">
                 <p>Add Tag</p>
-                <el-button icon="el-icon-close"></el-button>
+                <el-button @click="treeResult = true" icon="el-icon-close"></el-button>
             </div>
             <div class="addTag-content">
-                <el-form ref="addTagForm" label-width="100px">
+                <el-form ref="addTagForm" :label-width="resizeWidth >= 768 ? '150px' : ''">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="父標籤">
@@ -363,7 +363,7 @@
                         </el-col>
                         <el-col :span="24">
                             <el-form-item label="是否為前台搜索標籤">
-                                <el-select v-model="addTagForm">
+                                <el-select v-model="addTagForm.isSearchKey">
                                     <el-option :value="0" label="否"></el-option>
                                     <el-option :value="1" label="是"></el-option>
                                 </el-select>
@@ -377,46 +377,76 @@
                         <el-col :span="24">
                             <el-form-item label-width="0px">
                                 <div class="lang-titles">
-                                    <ul>
-                                        <li v-for="(item,index) in form.multilingualism" :key="`lang-title-${index}`">{{item.title}}</li>
+                                    <ul class="language">
+                                        <li v-for="(item,index) in addTagForm.translations" @click="handClickAddTag(item)" :key="`lang-title-${index}`" :class="['lang',item.active? 'lang-active':'']">{{item.title}}</li>
                                     </ul>
                                     <div class="title-list">
                                         <div class="um-title">
                                             <el-row>
-                                                <el-col :span="4">標題</el-col>
+                                                <el-col :span="resizeWidth >= 768 ? 4 : 24">標題</el-col>
                                                 <el-col :span="20">
-                                                    <el-input></el-input>
+                                                    <el-input v-model="titleAdd"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                         <div class="um-interest">
                                             <el-row>
-                                                <el-col :span="4">你或會有興趣</el-col>
+                                                <el-col :span="resizeWidth >= 768 ? 4 : 24">你或會有興趣</el-col>
                                                 <el-col :span="20">
-                                                    <el-input></el-input>
+                                                    <el-input v-model="keywordAdd"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                         <div class="um-notes">
                                             <el-row>
-                                                <el-col :span="4">內部備註</el-col>
-                                                <el-col :span="20">
-                                                    <el-input type="textarea"></el-input>
+                                                <el-col :span="resizeWidth >= 768 ? 4 : 24">內部備註</el-col>
+                                                <el-col :span="resizeWidth >= 768 ? 20 : 24">
+                                                    <el-input type="textarea" v-model="summaryAdd"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </el-form-item>
                         </el-col>
                     </el-row>
+                    <div class="form-action">
+                        <el-button class="btn-primary">添加</el-button>
+                    </div>
                 </el-form>
             </div>
         </div>
     </el-dialog>
     <!-- 弹窗 预览 -->
-    <el-dialog :visible.sync="previewDialogVisible" class="preview">
+    <el-dialog :visible.sync="previewDialogVisible" class="preview-modal">
+        <div class="preview-wrapper">
+            <ul class="language">
+                <li v-for="(item,index) in previewView.multilingualism" :key="`lang-title-${index}`" :class="['lang',item.active? 'lang-active':'']">{{item.title}}</li>
+            </ul>
+            <div class="preview-wrapper-content">
+                <div class="preview-content-header">
+                    <h3>
+                        <span>{{titlePreview}}</span>
+                        <small>{{previewView.newsType}}<small v-if="previewView.dateAt">({{previewView.dateAt}})</small></small>
+                    </h3>
+                </div>
+                <div class="preview-content-detail">
+                    <div v-html="contentPreview"></div>
+                    <div>
+                        <h5>內部備註:</h5>
+                        <template v-if="remarkPreview">
+                            {{remarkPreview}}
+                        </template>
+                    </div>
+                    <div>
+                        <h5>Requested New Tags:</h5>
+                        <template v-if="previewView.requestedTags">
+                            {{previewView.requestedTags}}
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
     </el-dialog>
 </div>
 </template>
@@ -442,8 +472,7 @@ export default {
     data() {
         return {
             input: null,
-            treeResult: false,
-            labelsKey: 'labelKey',
+            treeResult: true,
             deleteFile: false,
             disabled: true,
             form: {
@@ -513,7 +542,38 @@ export default {
             addTagForm: {
                 isPicTag: 0,
                 isSearchKey: 0,
-                position: 0
+                position: null,
+                translations: [{
+                        language: 'zh_TW',
+                        title: '繁體中文[默認]',
+                        active: true,
+                        content: {
+                            title: '',
+                            keyword: '',
+                            summary: ''
+                        }
+                    },
+                    {
+                        language: 'zh_CN',
+                        title: '簡體中文',
+                        active: false,
+                        content: {
+                            title: '',
+                            keyword: '',
+                            summary: ''
+                        }
+                    },
+                    {
+                        language: 'pt_PT',
+                        title: 'Português',
+                        active: false,
+                        content: {
+                            title: '',
+                            keyword: '',
+                            summary: ''
+                        }
+                    }
+                ]
             },
             language: [{
                     value: '',
@@ -763,7 +823,7 @@ export default {
             ],
             centerDialogVisible: false,
             previewDialogVisible: false,
-            updateDialogVisible: true,
+            updateDialogVisible: false,
             selected: '',
             typeIndex: 1,
             isUpdateNotice: true,
@@ -830,14 +890,25 @@ export default {
         }
     },
     methods: {
+        currentIndex(val) {
+            if (val == 1)
+                return this.form.multilingualism.findIndex(item => item.active)
+            else if (val == 2)
+                return this.addTagForm.translations.findIndex(item => item.active)
+            else if (val == 3)
+                return this.previewView.multilingualism.findIndex(item => item.active)
+        },
         onSubmit(evt) {
             evt.preventDefault()
             this.$refs.form.validate(valid => {
-                if (!valid) this.errorScoll()
+                if (!valid) setTimeout(() => {
+                    this.errorScoll()
+                }, 100)
+                else this.updateDialogVisible = true
             })
         },
         errorScoll() {
-            let errEle = document.querySelector('.is-invalid')
+            let errEle = document.querySelector('.el-form-item.is-error')
             errEle ? this.animateScroll(errEle, 50) : ''
         },
         animateScroll(element, speed) {
@@ -859,8 +930,15 @@ export default {
             }
             window.requestAnimationFrame(step);
         },
+        closeUpdate() {
+            this.treeResult = true
+        },
         handClick(item) {
             this.form.multilingualism.forEach(obj => obj.active = false)
+            item.active = true;
+        },
+        handClickAddTag(item) {
+            this.addTagForm.translations.forEach(obj => obj.active = false)
             item.active = true;
         },
         handleNews() {
@@ -943,20 +1021,11 @@ export default {
             else this.deleteWhole = false
         },
         handlePreview() {
-
+            this.previewDialogVisible = true
         },
         nodeClick(data, node) {
-            // this.childNodesChange(node)
             this.parentNodesChange(node)
         },
-        // childNodesChange(node) {
-        //     let that = this
-        //     let len = node.childNodes.length;
-        //     for (let i = 0; i < len; i++) {
-        //         node.childNodes[i].checked = false;
-        //         that.childNodesChange(node.childNodes[i]);
-        //     }
-        // },
         parentNodesChange(node) {
             let that = this
             if (node.parent && node.checked) {
@@ -968,8 +1037,12 @@ export default {
                 }
             }
         },
-        checkListBox(currentObj, treeStatus) {
-            // console.log(this.$refs.tree.getNode(currentObj))
+        checkListBox(currentObj) {
+            let node = this.$refs.tree.getNode(currentObj.id)
+            this.parentNodesChange(node)
+        },
+        page(val) {
+            return val < 10 ? '0' + val : val
         }
     },
     watch: {
@@ -1027,34 +1100,79 @@ export default {
             return this.form.multilingualism.length !== this.newLang.length;
         },
         lang() {
-            return this.form.multilingualism[this.currentIndex].language
-        },
-        currentIndex() {
-            return this.form.multilingualism.findIndex(item => item.active)
+            return this.form.multilingualism[this.currentIndex(1)].language
         },
         titleValue: {
             get() {
-                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.title : ''
+                return this.currentIndex(1) > -1 ? this.form.multilingualism[this.currentIndex(1)].content.title : ''
             },
             set(val) {
-                this.form.multilingualism[this.currentIndex].content.title = val
+                this.form.multilingualism[this.currentIndex(1)].content.title = val
             }
         },
         conValue: {
             get() {
-                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.content : ''
+                return this.currentIndex(1) > -1 ? this.form.multilingualism[this.currentIndex(1)].content.content : ''
             },
             set(val) {
-                this.form.multilingualism[this.currentIndex].content.content = val
+                this.form.multilingualism[this.currentIndex(1)].content.content = val
             }
         },
         remarkValue: {
             get() {
-                return this.currentIndex > -1 ? this.form.multilingualism[this.currentIndex].content.remark : ''
+                return this.currentIndex(1) > -1 ? this.form.multilingualism[this.currentIndex(1)].content.remark : ''
             },
             set(val) {
-                this.form.multilingualism[this.currentIndex].content.remark = val
+                this.form.multilingualism[this.currentIndex(1)].content.remark = val
             }
+        },
+        titleAdd: {
+            get() {
+                return this.currentIndex(2) > -1 ? this.addTagForm.translations[this.currentIndex(2)].content.title : ''
+            },
+            set(val) {
+                this.addTagForm.translations[this.currentIndex(2)].content.title = val
+            }
+        },
+        keywordAdd: {
+            get() {
+                return this.currentIndex(2) > -1 ? this.addTagForm.translations[this.currentIndex(2)].content.keyword : ''
+            },
+            set(val) {
+                this.addTagForm.translations[this.currentIndex(2)].content.keyword = val
+            }
+        },
+        summaryAdd: {
+            get() {
+                return this.currentIndex(2) > -1 ? this.addTagForm.translations[this.currentIndex(2)].content.summary : ''
+            },
+            set(val) {
+                this.addTagForm.translations[this.currentIndex(2)].content.summary = val
+            }
+        },
+        previewView() {
+            let resDate = ''
+            if (this.form.dateAt) {
+                let data = new Date(this.form.dateAt)
+                resDate = data.getFullYear() + '-' + this.page((data.getMonth() + 1)) + '-' + this.page(data.getDate())
+            }
+            let previewView = {
+                newsType: this.form.newsType,
+                dateAt: resDate,
+                requestedTags: this.form.requestedTags,
+                multilingualism: this.form.multilingualism
+            }
+            console.log(previewView)
+            return previewView
+        },
+        titlePreview() {
+            return this.currentIndex(3) > -1 ? this.previewView.multilingualism[this.currentIndex(3)].content.title : ''
+        },
+        remarkPreview() {
+            return this.currentIndex(3) > -1 ? this.previewView.multilingualism[this.currentIndex(3)].content.remark : ''
+        },
+        contentPreview() {
+            return this.currentIndex(3) > -1 ? this.previewView.multilingualism[this.currentIndex(3)].content.content : ''
         }
     }
 }
