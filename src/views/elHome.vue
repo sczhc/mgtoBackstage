@@ -427,11 +427,17 @@
                 <div class="preview-content-header">
                     <h3>
                         <span>{{titlePreview}}</span>
-                        <small>{{previewView.newsType}}<small v-if="previewView.dateAt">({{previewView.dateAt}})</small></small>
+                        <small>({{previewView.newsType}}<small v-if="previewView.dateAt">{{previewView.dateAt}}</small>)</small>
                     </h3>
+                    <div v-if="previewView.treeNode.length">
+                        <span>標籤：</span>
+                        <a v-for="(item,index) in previewView.treeNode" :key="`tag_tree_${index}`" href="#" target="_blank" class="newTag">{{item.label}}</a>
+                    </div>
                 </div>
                 <div class="preview-content-detail">
-                    <div v-html="contentPreview"></div>
+                    <template v-if="contentPreview">
+                        <div v-html="contentPreview"></div>
+                    </template>
                     <div>
                         <h5>內部備註:</h5>
                         <template v-if="remarkPreview">
@@ -471,6 +477,8 @@ export default {
     },
     data() {
         return {
+            treeNode: {},
+            tree: {},
             input: null,
             treeResult: true,
             deleteFile: false,
@@ -1036,6 +1044,7 @@ export default {
                     }
                 }
             }
+            that.treeNode = node
         },
         checkListBox(currentObj) {
             let node = this.$refs.tree.getNode(currentObj.id)
@@ -1069,6 +1078,12 @@ export default {
                 }
             },
             immediate: true
+        },
+        'treeNode': {
+            handler(n) {
+                this.tree = this.$refs.tree.getCheckedNodes()
+            },
+            deep: true
         }
     },
     mounted() {
@@ -1160,9 +1175,9 @@ export default {
                 newsType: this.form.newsType,
                 dateAt: resDate,
                 requestedTags: this.form.requestedTags,
-                multilingualism: this.form.multilingualism
+                multilingualism: this.form.multilingualism,
+                treeNode: this.tree
             }
-            console.log(previewView)
             return previewView
         },
         titlePreview() {

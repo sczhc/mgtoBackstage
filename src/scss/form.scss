@@ -309,6 +309,20 @@ ul.language {
 
             .preview-content-header {
                 border-bottom: 1px solid #eee;
+                padding-bottom: 20px;
+
+                .newTag {
+                    display: inline-block;
+                    background: #2B7DBC;
+                    color: #fff;
+                    padding: .3em;
+                    border-radius: .3em;
+                    margin: 2px .3em;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
 
             .preview-content-detail {
@@ -317,7 +331,11 @@ ul.language {
                 }
 
                 >div {
-                    margin: 0 0 20px;
+                    padding: 20px 0;
+
+                    h5 {
+                        margin-top: 0;
+                    }
 
                     &:not(:last-child) {
                         border-bottom: 1px solid #eee;
