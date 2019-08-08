@@ -5,23 +5,23 @@ import Home from './views/Home.vue'
 Vue.use(Router)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   component: Home
+  // },
+  // {
+  //   path: '/test',
+  //   name: 'test',
+  //   component: () => import('@/views/test.vue')
+  // },
+  // {
+  //   path: '/darg',
+  //   name: 'darg',
+  //   component: () => import('@/views/darg.vue')
+  // },
   {
     path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import('@/views/test.vue')
-  },
-  {
-    path: '/darg',
-    name: 'darg',
-    component: () => import('@/views/darg.vue')
-  },
-  {
-    path: '/elHome',
     name: 'elHome',
     component: () => import('@/views/elHome.vue')
   }
