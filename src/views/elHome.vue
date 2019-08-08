@@ -286,7 +286,7 @@
                                     <el-button @click="deletePage">刪除</el-button>
                                     <el-checkbox v-model="deleteWhole" @click="deleteAll" @change="deleteChange">刪除所有文件</el-checkbox>
                                 </div>
-                                <darg-file :newLang="dargLang" :imgList="imgList" @imgInput="imgInput" @checked="checkedList" :afferentList="afferentList"></darg-file>
+                                <darg-file :presetLang="form.indicator" :newLang="dargLang" :imgList="imgList" @imgInput="imgInput" @checked="checkedList" :afferentList="afferentList"></darg-file>
                             </el-collapse-item>
                         </el-collapse>
                     </div>
@@ -825,7 +825,7 @@ export default {
                 }
             ],
             toolbar: [
-                ['Source', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromword', '-', 'Undo', 'Redo', '-', 'Outdent', 'Indent'],
+                ['Source', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo', '-', 'Outdent', 'Indent'],
                 '/',
                 ['Table', 'Rule', '-', 'Styles', '-', 'Strike', '-', 'RemoveFormat', '-', 'Maximize']
             ],

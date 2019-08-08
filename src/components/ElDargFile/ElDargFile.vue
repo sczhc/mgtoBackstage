@@ -3,26 +3,50 @@
     <div class="dargImg">
         <div class="img" v-if="imgs">
             <ul>
-                <!-- <li class="img-slide" v-for="(item,index) in imgs" :key="`img-slide-${index}`">{{item.text}}</li> -->
                 <li class="img-slide" v-for="(item,index) in imgs" :key="`img-slide-${index}`">
-                    <a href="javascript:void(0)">
-                        <img :src="item.url">
-                        <div class="text-inner">
-                            <div class="inner">{{item.name}}</div>
+                    <div class="img-tags">
+                        <a href="javascript:void(0)">
+                            <img :src="item.url">
+                            <div class="text-inner">
+                                <div class="inner">{{item.name}}</div>
+                            </div>
+                        </a>
+                        <div class="tags">
+                            <div class="label-holder">
+                                <label class="no-margin">
+                                    <input type="checkbox" :value="item.name" v-model="checkedNames">
+                                </label>
+                            </div>
+                            <div class="label-holder">
+                                <el-button @click="deleteCurrent(index)" icon="el-icon-close"></el-button>
+                            </div>
                         </div>
-                    </a>
-                    <div class="tags">
-                        <div class="label-holder">
-                            <label class="no-margin">
-                                <input type="checkbox" :value="item.name" v-model="checkedNames">
-                            </label>
-                        </div>
-                        <div class="label-holder">
-                            <el-button @click="deleteCurrent(index)" icon="el-icon-close"></el-button>
+                        <div class="tools-top">
+                            <el-button @click="handleModal"><i class="el-icon-edit"></i>編輯</el-button>
                         </div>
                     </div>
-                    <div class="tools-top">
-                        <el-button @click="handleModal"><i class="el-icon-edit"></i>編輯</el-button>
+                    <div class="img-file">
+                        <el-collapse v-model="activeNames">
+                            <el-collapse-item v-for="obj in enclosureList" :key="obj.key" :title="obj.title">
+                                <el-form ref="form" :model="enclosureForm" :label-width="resizeWidth >= 768 ? '100px' : ''">
+                                    <el-form-item label="附件類型">
+                                        <el-select v-model="imgTyp">
+                                            <el-option value="38" label="圖片"></el-option>
+                                            <el-option value="37" label="文件"></el-option>
+                                            <el-option value="39" label="影片"></el-option>
+                                            <el-option value="40" label="社交渠道"></el-option>
+                                            <el-option value="41" label="其他"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="Title">
+                                        <el-input v-model="titleEdit"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="Summary">
+                                        <el-input v-model="summaryEdit"></el-input>
+                                    </el-form-item>
+                                </el-form>
+                            </el-collapse-item>
+                        </el-collapse>
                     </div>
                 </li>
             </ul>
@@ -35,7 +59,7 @@
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </div>
     </div>
-    <el-dialog class="file-modal" :visible.sync="imgModal" title="編輯">
+    <!-- <el-dialog class="file-modal" :visible.sync="imgModal" title="編輯">
         <el-form label-width="100px">
             <el-row>
                 <el-col :span="24">
@@ -81,8 +105,6 @@
                                     <li v-for="(item,index) in language" :key="`lang-list-${index}`" @click="handleChangeLang(item)" :class="[item.active? 'lang-active':'']">{{item.text}}</li>
                                 </ul>
                             </div>
-                            <!-- <div class="content-list">
-                            </div> -->
                         </div>
                     </el-form-item>
                 </el-col>
@@ -107,7 +129,7 @@
         <template slot="footer">
             <el-button @click="handleClose">關閉</el-button>
         </template>
-    </el-dialog>
+    </el-dialog> -->
 </div>
 </template>
 
@@ -127,6 +149,10 @@ export default {
         afferentList: {
             type: Array,
             default: () => []
+        },
+        presetLang: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -138,7 +164,11 @@ export default {
             fileBrowse: '瀏覽 ...',
             isUpload: false,
             language: [],
-            checkedNames: []
+            preset: '',
+            checkedNames: [],
+            enclosureList: [],
+            activeNames: '',
+            resizeWidth: window.innerWidth,
         }
     },
     methods: {
@@ -191,10 +221,11 @@ export default {
 
         }
     },
-    // created() {
-    //     this.imgs = this.imgList
-    // },
     mounted() {
+        window.onresize = () => {
+            this.resizeWidth = window.innerWidth
+        }
+
         document.querySelector('.uploadArea').addEventListener('dragenter', (event) => {
             event.preventDefault()
         })
@@ -286,12 +317,29 @@ export default {
             deep: true,
             immediate: true
         },
-        // 'imgList': {
-        //     handler(n) {
-        //         this.imgs = n
-        //     },
-        //     deep: true
-        // }
+        'presetLang': {
+            handler(n) {
+                console.log(this.newLang)
+                let lang = []
+                this.newLang.map(item => {
+                    lang.push({
+                        ...item
+                    })
+                })
+                if (n == '' || n == 'zh_TW') {
+
+                }
+                this.enclosureList.push({
+                    title: '',
+                    key: Date().now,
+                    imgTyp: '38',
+                    titleEdit: '',
+                    summaryEdit: ''
+                })
+                this.preset = n
+            },
+            immediate: true
+        }
     }
 }
 </script>
