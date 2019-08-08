@@ -33,14 +33,14 @@ const router = new Router({
   routes: routes
 })
 
-router.afterEach(() => {
-  const splashScreen = document.querySelector('.app-splash-screen')
-  if (splashScreen) {
-    splashScreen.getElementsByClassName.opacity = 0
-    setTimeout(() =>
-      splashScreen && splashScreen.parentNode && splashScreen.parentNode.removeChild(splashScreen)
-      , 1000)
-  }
-})
+// router.afterEach(() => {
+//   const splashScreen = document.querySelector('.app-splash-screen')
+//   if (splashScreen) {
+//     splashScreen.getElementsByClassName.opacity = 0
+//     setTimeout(() =>
+//       splashScreen && splashScreen.parentNode && splashScreen.parentNode.removeChild(splashScreen)
+//       , 1000)
+//   }
+// })
 
 export default router
