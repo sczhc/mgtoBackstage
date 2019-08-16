@@ -16,18 +16,32 @@
                 li {
                     margin: 0 10px 10px;
                     cursor: pointer;
-                    position: relative;
                     overflow: hidden;
+                    display: flex;
+                    border: 1px solid #ccc;
+                    padding: 10px;
+
+                    >div {
+                        position: relative;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+
+                        .el-collapse {
+                            .el-collapse-item__header {
+                                padding-left: 10px;
+                            }
+
+                            .el-collapse-item__wrap {
+                                padding: 10px;
+                            }
+                        }
+                    }
 
                     a {
                         display: block;
                         position: relative;
-                    }
-
-                    &:hover {
-                        .tools-top {
-                            top: 0;
-                        }
                     }
                 }
             }

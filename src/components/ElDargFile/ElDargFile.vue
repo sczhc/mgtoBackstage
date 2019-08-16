@@ -10,27 +10,27 @@
                             <div class="text-inner">
                                 <div class="inner">{{item.name}}</div>
                             </div>
+                            <div class="tags">
+                                <div class="label-holder">
+                                    <label class="no-margin">
+                                        <input type="checkbox" :value="item.name" v-model="checkedNames">
+                                    </label>
+                                </div>
+                                <div class="label-holder">
+                                    <el-button @click="deleteCurrent(index)" icon="el-icon-close"></el-button>
+                                </div>
+                            </div>
                         </a>
-                        <div class="tags">
-                            <div class="label-holder">
-                                <label class="no-margin">
-                                    <input type="checkbox" :value="item.name" v-model="checkedNames">
-                                </label>
-                            </div>
-                            <div class="label-holder">
-                                <el-button @click="deleteCurrent(index)" icon="el-icon-close"></el-button>
-                            </div>
-                        </div>
-                        <div class="tools-top">
+                        <!-- <div class="tools-top">
                             <el-button @click="handleModal"><i class="el-icon-edit"></i>編輯</el-button>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="img-file">
                         <el-collapse v-model="activeNames">
                             <el-collapse-item v-for="obj in enclosureList" :key="obj.key" :title="obj.title">
-                                <el-form ref="form" :model="enclosureForm" :label-width="resizeWidth >= 768 ? '100px' : ''">
+                                <el-form ref="form" :model="item" :label-width="resizeWidth >= 768 ? '100px' : ''">
                                     <el-form-item label="附件類型">
-                                        <el-select v-model="imgTyp">
+                                        <el-select v-model="item.imgTyp">
                                             <el-option value="38" label="圖片"></el-option>
                                             <el-option value="37" label="文件"></el-option>
                                             <el-option value="39" label="影片"></el-option>
@@ -39,10 +39,10 @@
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item label="Title">
-                                        <el-input v-model="titleEdit"></el-input>
+                                        <el-input v-model="item.titleEdit"></el-input>
                                     </el-form-item>
                                     <el-form-item label="Summary">
-                                        <el-input v-model="summaryEdit"></el-input>
+                                        <el-input v-model="item.summaryEdit"></el-input>
                                     </el-form-item>
                                 </el-form>
                             </el-collapse-item>
@@ -163,7 +163,7 @@ export default {
             fileText: '選擇文件',
             fileBrowse: '瀏覽 ...',
             isUpload: false,
-            language: [],
+            // language: [],
             preset: '',
             checkedNames: [],
             enclosureList: [],
@@ -192,14 +192,14 @@ export default {
             let files = this.$refs.input.files
             this.appendFile(files)
         },
-        handleModalChange(event) {
-            let tar = event.target.files
-            if (tar) {
-                this.fileBrowse = tar[0].name
-                this.fileText = '變更'
-                this.isUpload = true
-            }
-        },
+        // handleModalChange(event) {
+        //     let tar = event.target.files
+        //     if (tar) {
+        //         this.fileBrowse = tar[0].name
+        //         this.fileText = '變更'
+        //         this.isUpload = true
+        //     }
+        // },
         handleChangeLang(item) {
             this.language.forEach(item => item.active = false)
             item.active = true
@@ -266,36 +266,48 @@ export default {
         })
     },
     computed: {
-        currentIndex() {
-            return this.language.findIndex(item => item.active)
-        },
-        titleEdit: {
-            get() {
-                return this.currentIndex > -1 ? this.language[this.currentIndex].content.title : ''
-            },
-            set(val) {
-                this.language[this.currentIndex].content.title = val
-            }
-        },
-        summaryEdit: {
-            get() {
-                return this.currentIndex > -1 ? this.language[this.currentIndex].content.summary : ''
-            },
-            set(val) {
-                this.language[this.currentIndex].content.summary = val
-            }
+        // currentIndex() {
+        //     return this.language.findIndex(item => item.active)
+        // },
+        // titleEdit: {
+        //     get() {
+        //         return this.currentIndex > -1 ? this.language[this.currentIndex].content.title : ''
+        //     },
+        //     set(val) {
+        //         this.language[this.currentIndex].content.title = val
+        //     }
+        // },
+        // summaryEdit: {
+        //     get() {
+        //         return this.currentIndex > -1 ? this.language[this.currentIndex].content.summary : ''
+        //     },
+        //     set(val) {
+        //         this.language[this.currentIndex].content.summary = val
+        //     }
+        // },
+        language() {
+            let lang = []
+            this.newLang.map(item => {
+                lang.push({
+                    disabled: false,
+                    ...item
+                })
+            })
+            lang.splice(0, 1)
+            console.log(lang)
+            return lang
         }
     },
     created() {
-        let lang = []
-        lang = this.newLang.map(item => {
-            return {
-                ...item
-            }
-        })
-        lang.forEach(item => item.active = false)
-        lang[0].active = true
-        this.language = lang
+        // let lang = []
+        // lang = this.newLang.map(item => {
+        //     return {
+        //         ...item
+        //     }
+        // })
+        // lang.forEach(item => item.active = false)
+        // lang[0].active = true
+        // this.language = lang
     },
     watch: {
         'imgs': {
@@ -319,22 +331,20 @@ export default {
         },
         'presetLang': {
             handler(n) {
-                console.log(this.newLang)
-                let lang = []
-                this.newLang.map(item => {
-                    lang.push({
-                        ...item
-                    })
-                })
-                if (n == '' || n == 'zh_TW') {
-
-                }
-                this.enclosureList.push({
-                    title: '',
-                    key: Date().now,
-                    imgTyp: '38',
-                    titleEdit: '',
-                    summaryEdit: ''
+                let obj = n
+                this.language.forEach(item => {
+                    if (obj == '')
+                        obj = 'zh_TW'
+                    if (item.value == obj) {
+                        item.disabled = true
+                        this.enclosureList.push({
+                            title: item.text,
+                            key: Date().now,
+                            imgTyp: '38',
+                            titleEdit: '',
+                            summaryEdit: ''
+                        })
+                    }
                 })
                 this.preset = n
             },
