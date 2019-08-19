@@ -29,7 +29,7 @@
                     <template slot="label">
                         <label><span class="mandatory">*</span>審批狀態</label>
                     </template>
-                    <el-input v-model="form.statusShow" :disabled="disabled"></el-input>
+                    <el-input v-model="form.status" :disabled="disabled"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -65,9 +65,6 @@
             <template v-if="typeIndex == 1">
                 <el-col :span="24">
                     <el-form-item label="通知備註" prop="updateNoticeRemarks">
-                        <!-- <template slot="label">
-                                <label><span class="mandatory">*</span></label>
-</template>-->
                         <el-input type="textarea" v-model="form.updateNoticeRemarks"></el-input>
                     </el-form-item>
                 </el-col>
@@ -76,7 +73,7 @@
             <template v-if="typeIndex == 5">
                 <el-col :span="24">
                     <el-form-item label="國家地區">
-                        <el-select v-model="form.Country">
+                        <el-select v-model="form.country">
                             <el-option v-for="(item,index) in countrys" :key="`countrys-${index}`" :label="item.text" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
@@ -90,10 +87,10 @@
                             <label><span class="mandatory">*</span>發佈者在活動中的角色</label>
                         </template>
                         <el-select v-model="form.extra.newsRole">
-                            <el-option value="0" label="參與方"></el-option>
-                            <el-option value="1" label="支持方"></el-option>
-                            <el-option value="2" label="協辦方"></el-option>
-                            <el-option value="3" label="主辦方"></el-option>
+                            <el-option :value="0" label="參與方"></el-option>
+                            <el-option :value="1" label="支持方"></el-option>
+                            <el-option :value="2" label="協辦方"></el-option>
+                            <el-option :value="3" label="主辦方"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -115,19 +112,19 @@
                 <el-col :span="24">
                     <el-form-item label="性質">
                         <el-select v-model="form.extra.actNature">
-                            <el-option value=""></el-option>
-                            <el-option value="0" label="海外推廣 - 協會性質"></el-option>
-                            <el-option value="1" label="海外推廣 - 貿易會"></el-option>
-                            <el-option value="2" label="海外推廣 - 貿易會 (B to C)"></el-option>
-                            <el-option value="3" label="海外推廣 - 貿易會 (B to B)"></el-option>
-                            <el-option value="4" label="海外推廣 - 貿易會 (B to B/C)"></el-option>
-                            <el-option value="5" label="海外推廣 - 公關活動"></el-option>
-                            <el-option value="6" label="海外推廣 - 講座"></el-option>
-                            <el-option value="7" label="海外推廣 - 洽談會"></el-option>
-                            <el-option value="8" label="海外推廣 - 講座及洽談會"></el-option>
-                            <el-option value="9" label="海外推廣 - 路展"></el-option>
-                            <el-option value="10" label="海外推廣 - 特別活動"></el-option>
-                            <el-option value="11" label="海外推廣 - 其他"></el-option>
+                            <el-option :value="null"></el-option>
+                            <el-option :value="0" label="海外推廣 - 協會性質"></el-option>
+                            <el-option :value="1" label="海外推廣 - 貿易會"></el-option>
+                            <el-option :value="2" label="海外推廣 - 貿易會 (B to C)"></el-option>
+                            <el-option :value="3" label="海外推廣 - 貿易會 (B to B)"></el-option>
+                            <el-option :value="4" label="海外推廣 - 貿易會 (B to B/C)"></el-option>
+                            <el-option :value="5" label="海外推廣 - 公關活動"></el-option>
+                            <el-option :value="6" label="海外推廣 - 講座"></el-option>
+                            <el-option :value="7" label="海外推廣 - 洽談會"></el-option>
+                            <el-option :value="8" label="海外推廣 - 講座及洽談會"></el-option>
+                            <el-option :value="9" label="海外推廣 - 路展"></el-option>
+                            <el-option :value="10" label="海外推廣 - 特別活動"></el-option>
+                            <el-option :value="11" label="海外推廣 - 其他"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -194,12 +191,12 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item label="發佈者">
-                    <el-input v-model="form.createdByShow" :disabled="disabled"></el-input>
+                    <el-input v-model="form.createdBy" :disabled="disabled"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="24">
                 <el-form-item label="審批者">
-                    <el-input v-model="form.approvedByShow" :disabled="disabled"></el-input>
+                    <el-input v-model="form.approvedBy" :disabled="disabled"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -337,7 +334,7 @@
                 <el-tree ref="tree" :data="labelList" show-checkbox node-key="id" :expand-on-click-node="false" :check-strictly="true" :check-on-click-node="true" :default-expand-all="true" @node-click="nodeClick" @check="checkListBox">
                 </el-tree>
                 <div class="tree-button">
-                    <el-button>確定</el-button>
+                    <el-button @click="submitClick">確定</el-button>
                     <el-button @click="treeResult = false">Add Tag</el-button>
                 </div>
             </div>
@@ -468,6 +465,7 @@
 import Vue from 'vue';
 import WizEditor from '@/components/WizEditor'
 import DargFile from '@/components/ElDargFile'
+import axios from 'axios'
 
 let checkList = []
 
@@ -479,8 +477,10 @@ export default {
     props: {
         types: {
             type: String,
-            default: 'update'
-        }
+            default: 'create'
+        },
+        id: null,
+        status: String,
     },
     data() {
         return {
@@ -492,7 +492,7 @@ export default {
             disabled: true,
             form: {
                 newsType: '56',
-                statusShow: 'DRAFT',
+                status: 'DRAFT',
                 onlineAt: '',
                 offlineAt: '',
                 dateAt: '',
@@ -500,25 +500,25 @@ export default {
                 showInHomePage: false,
                 isSendUpdateNotice: false,
                 updateNoticeRemarks: '',
-                Country: '',
+                country: '',
                 extra: {
-                    newsRole: '0',
-                    beginTime: '',
-                    endTime: '',
-                    url: '',
-                    actNature: '',
-                    joinGroup: '',
-                    RegDeadline: '',
+                    newsRole: 0,
+                    beginTime: null,
+                    endTime: null,
+                    url: null,
+                    actNature: null,
+                    joinGroup: null,
+                    RegDeadline: null,
                     eService: null,
                     picDirection: 'transverse',
                     picHasPersion: false
                 },
                 news: '',
-                createdAt: '',
-                updatedAt: '',
-                updatedBy: '',
-                createdByShow: '',
-                approvedByShow: '',
+                createdAt: '2019-05-20 16:03:14',
+                updatedAt: '2019-08-19 15:17:50',
+                updatedBy: 'admin',
+                createdBy: 'admin',
+                approvedBy: '',
                 indicator: '',
                 requestedTags: '',
                 datePicker: '',
@@ -909,13 +909,25 @@ export default {
             else if (val == 3)
                 return this.previewView.multilingualism.findIndex(item => item.active)
         },
+        submitClick() {
+            let params = this.form
+            axios.post('http://mgto-media.tiger.wizmacau.com/admintools/news_draft/api_get').then(res => {
+                console.log(res)
+            }).catch(err => {
+                console.log(err)
+            })
+        },
         onSubmit(evt) {
             evt.preventDefault()
             this.$refs.form.validate(valid => {
-                if (!valid) setTimeout(() => {
-                    this.errorScoll()
-                }, 100)
-                else this.updateDialogVisible = true
+                if (!valid) {
+                    setTimeout(() => {
+                        this.errorScoll()
+                    }, 100)
+                } else {
+                    this.updateDialogVisible = true
+                    console.log(this.form)
+                }
             })
         },
         errorScoll() {
