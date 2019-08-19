@@ -235,6 +235,11 @@
                             <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
                         </ul>
                         <div class="multilin-text">
+                            <template v-if="lang == 'zh_TW'">
+                                <a class="complexity" @click="complexity">
+                                    <img src="@/assets/icon_t2s.png">
+                                </a>
+                            </template>
                             <div class="title-mult">
                                 <el-row>
                                     <el-col :span="resizeWidth >= 768 ? 4 : 24">
@@ -466,6 +471,9 @@ import Vue from 'vue';
 import WizEditor from '@/components/WizEditor'
 import DargFile from '@/components/ElDargFile'
 import axios from 'axios'
+import {
+    traditionalized
+} from '@/utils/simplicity'
 
 let checkList = []
 
@@ -861,46 +869,48 @@ export default {
             afferentList: [],
             imgList: [],
             resizeWidth: window.innerWidth,
-            labelList: [
-                {
-                    id: 1,
-                    label: '一级 1',
+            labelList: [{
+                id: 1,
+                label: '一级 1',
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
                     children: [{
-                        id: 4,
-                        label: '二级 1-1',
-                        children: [{
-                            id: 9,
-                            label: '三级 1-1-1'
-                        }, {
-                            id: 10,
-                            label: '三级 1-1-2'
-                        }]
-                    }]
-                }, {
-                    id: 2,
-                    label: '一级 2',
-                    children: [{
-                        id: 5,
-                        label: '二级 2-1'
+                        id: 9,
+                        label: '三级 1-1-1'
                     }, {
-                        id: 6,
-                        label: '二级 2-2'
+                        id: 10,
+                        label: '三级 1-1-2'
                     }]
+                }]
+            }, {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1'
                 }, {
-                    id: 3,
-                    label: '一级 3',
-                    children: [{
-                        id: 7,
-                        label: '二级 3-1'
-                    }, {
-                        id: 8,
-                        label: '二级 3-2'
-                    }]
-                }
-            ]
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            }, {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }]
         }
     },
     methods: {
+        complexity() {
+            let value = this.traditionalized('繁体');
+            console.log(value);
+        },
         currentIndex(val) {
             if (val == 1)
                 return this.form.multilingualism.findIndex(item => item.active)

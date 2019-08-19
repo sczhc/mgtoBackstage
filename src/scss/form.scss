@@ -456,6 +456,14 @@ ul.language {
     .multilin-text {
         padding: 16px 12px;
         border: 1px solid #C5D0DC;
+        position: relative;
+
+        .complexity {
+            position: absolute;
+            z-index: 99;
+            top: 16px;
+            left: 12px;
+        }
 
         >div:not(:last-child) {
             margin-bottom: 20px;
