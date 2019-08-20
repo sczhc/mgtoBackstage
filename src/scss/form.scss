@@ -454,6 +454,7 @@ ul.language {
         }
 
         p {
+            padding-right: 12px;
             text-align: right;
             margin: 0;
         }
@@ -493,8 +494,14 @@ ul.language {
         }
     }
 
-    .multilingualism .multilin-text p {
-        text-align: left;
+    .multilingualism .multilin-text {
+        .title-mult {
+            margin-top: 40px;
+        }
+
+        p {
+            text-align: left;
+        }
     }
 
     .form-group {

@@ -69,7 +69,6 @@
                     </el-form-item>
                 </el-col>
             </template>
-
             <template v-if="typeIndex == 5">
                 <el-col :span="24">
                     <el-form-item label="國家地區">
@@ -79,7 +78,6 @@
                     </el-form-item>
                 </el-col>
             </template>
-
             <template v-if="typeIndex == 2">
                 <el-col :span="24">
                     <el-form-item>
@@ -233,7 +231,7 @@
                             <li @click="handClick(item)" v-for="(item,index) in form.multilingualism" :class="['lang',item.active? 'lang-active':'']" :key="`multi_${item.language}`">
                                 <p>{{item.title}}</p>
                                 <template v-if="item.language != 'zh_TW'">
-                                    <span @click="langDelete(index)" class="el-icon-circle-close"></span>
+                                    <span @click="langDelete($event,index)" class="el-icon-circle-close"></span>
                                 </template>
                             </li>
                             <el-button icon="el-icon-plus" @click="handAdd" v-if="choosingButton"></el-button>
@@ -246,30 +244,30 @@
                             </template>
                             <div class="title-mult">
                                 <el-row>
-                                    <el-col :span="resizeWidth >= 768 ? 4 : 24">
+                                    <el-col :xs="24" :sm="4">
                                         <p>標題</p>
                                     </el-col>
-                                    <el-col :span="20">
+                                    <el-col :xs="24" :sm="20">
                                         <wiz-editor id="titleEditor" v-model="titleValue" :editLang="lang" :toolbar="toolbar"></wiz-editor>
                                     </el-col>
                                 </el-row>
                             </div>
                             <div class="content-mult">
                                 <el-row>
-                                    <el-col :span="resizeWidth >= 768 ? 4 : 24">
+                                    <el-col :xs="24" :sm="4">
                                         <p>內容</p>
                                     </el-col>
-                                    <el-col :span="20">
+                                    <el-col :xs="24" :sm="20">
                                         <wiz-editor id="contentEditor" v-model="conValue" :editLang="lang" :enterMode="1" height="200px"></wiz-editor>
                                     </el-col>
                                 </el-row>
                             </div>
                             <div class="remark-mult">
                                 <el-row>
-                                    <el-col :span="resizeWidth >= 768 ? 4 : 24">
+                                    <el-col :xs="24" :sm="4">
                                         <p> 內部備註</p>
                                     </el-col>
-                                    <el-col :span="20">
+                                    <el-col :xs="24" :sm="20">
                                         <el-input type="textarea" id="news_draft_translations_kr_summary" v-model="remarkValue"></el-input>
                                     </el-col>
                                 </el-row>
@@ -277,7 +275,6 @@
                         </div>
                     </div>
                 </el-form-item>
-
             </el-col>
             <el-col :span="24">
                 <el-form-item>
@@ -864,41 +861,43 @@ export default {
             afferentList: [],
             imgList: [],
             resizeWidth: window.innerWidth,
-            labelList: [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
+            labelList: [
+                {
+                    id: 1,
+                    label: '一级 1',
                     children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
+                        id: 4,
+                        label: '二级 1-1',
+                        children: [{
+                            id: 9,
+                            label: '三级 1-1-1'
+                        }, {
+                            id: 10,
+                            label: '三级 1-1-2'
+                        }]
                     }]
-                }]
-            }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
                 }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
                 }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }]
+                    id: 3,
+                    label: '一级 3',
+                    children: [{
+                        id: 7,
+                        label: '二级 3-1'
+                    }, {
+                        id: 8,
+                        label: '二级 3-2'
+                    }]
+                }
+            ]
         }
     },
     methods: {
@@ -961,10 +960,15 @@ export default {
                 });
             }
         },
-        langDelete(index) {
+        langDelete(e,index) {
+            e.preventDefault()
+            e.stopPropagation()
             this.$confirm('確定要刪除嗎？').then(() => {
+                if(this.form.multilingualism[index].active) {
+                    this.form.multilingualism.forEach(item => item.active = false)
+                    this.form.multilingualism[0].active = true
+                }
                 this.form.multilingualism.splice(index, 1)
-                console.log(this.form.multilingualism)
             }).catch()
         },
         currentIndex(val) {
