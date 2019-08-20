@@ -294,7 +294,6 @@ export default {
                 })
             })
             lang.splice(0, 1)
-            console.log(lang)
             return lang
         }
     },

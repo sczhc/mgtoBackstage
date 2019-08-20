@@ -1,17 +1,6 @@
 .btn {
     border-radius: 0;
     vertical-align: top;
-    border: 5px solid #fff;
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 !important;
-    }
-}
-
-.el-button {
-    border-radius: 0;
-    vertical-align: top;
     border: 5px solid transparent;
     outline: none;
     color: #fff;
@@ -22,6 +11,10 @@
         color: #fff;
         box-shadow: 0 0 0 !important;
     }
+}
+
+.btn-lineheight {
+    line-height: 13px;
 }
 
 .btn-primary {
@@ -139,7 +132,8 @@ ul.language {
     flex-wrap: wrap;
 
     li {
-        padding: 0 10px;
+        position: relative;
+        padding: 0 20px;
         height: 40px;
         line-height: 40px;
         border: 1px solid #C5D0DC;
@@ -157,6 +151,20 @@ ul.language {
             box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
             color: #576373;
             margin-bottom: -2px;
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            right: 2px;
+            transform: translateY(-50%);
+            display: none;
+        }
+
+        &:hover {
+            span {
+                display: block;
+            }
         }
     }
 }
@@ -422,30 +430,6 @@ ul.language {
 
 .multilingualism {
     .language {
-        // display: flex;
-        // flex-wrap: wrap;
-
-        // >li {
-        //     padding: 0 10px;
-        //     height: 40px;
-        //     line-height: 40px;
-        //     border: 1px solid #C5D0DC;
-        //     cursor: pointer;
-        //     margin-right: -1px;
-        //     margin-bottom: -1px;
-        //     color: #999;
-        //     background-color: #F9F9F9;
-
-        //     &.langAction {
-        //         border-bottom-color: transparent;
-        //         background-color: #fff;
-        //         border-top: 2px solid #4C8FBD;
-        //         margin-top: -1px;
-        //         box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
-        //         color: #576373;
-        //         margin-bottom: -2px;
-        //     }
-        // }
 
         .el-button {
             border: 1px solid #DCDFE6;
