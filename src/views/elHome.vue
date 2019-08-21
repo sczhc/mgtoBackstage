@@ -289,7 +289,7 @@
                                     <el-button class="btn btn-lineheight" @click="deletePage">刪除</el-button>
                                     <el-checkbox v-model="deleteWhole" @click="deleteAll" @change="deleteChange">刪除所有文件</el-checkbox>
                                 </div>
-                                <darg-file :presetLang="form.indicator" :newLang="language" :imgList="imgList" @imgInput="imgInput" @checked="checkedList" :afferentList="afferentList"></darg-file>
+                                <darg-file :presetLang="form.indicator" :newLang="language" :imgList="imgList" @checked="checkedList" :afferentList="afferentList"></darg-file>
                             </el-collapse-item>
                         </el-collapse>
                     </div>
@@ -387,24 +387,30 @@
                                     <div class="title-list">
                                         <div class="um-title">
                                             <el-row>
-                                                <el-col :span="resizeWidth >= 768 ? 4 : 24">標題</el-col>
-                                                <el-col :span="20">
+                                                <el-col :xs="24" :sm="4">
+                                                    <p>標題</p>
+                                                </el-col>
+                                                <el-col :xs="24" :sm="20">
                                                     <el-input v-model="titleAdd"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                         <div class="um-interest">
                                             <el-row>
-                                                <el-col :span="resizeWidth >= 768 ? 4 : 24">你或會有興趣</el-col>
-                                                <el-col :span="20">
+                                                <el-col :xs="24" :sm="4">
+                                                    <p>你或會有興趣</p>
+                                                </el-col>
+                                                <el-col :xs="24" :sm="20">
                                                     <el-input v-model="keywordAdd"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </div>
                                         <div class="um-notes">
                                             <el-row>
-                                                <el-col :span="resizeWidth >= 768 ? 4 : 24">內部備註</el-col>
-                                                <el-col :span="resizeWidth >= 768 ? 20 : 24">
+                                                <el-col :xs="24" :sm="4">
+                                                    <p>內部備註</p>
+                                                </el-col>
+                                                <el-col :xs="24" :sm="20">
                                                     <el-input type="textarea" v-model="summaryAdd"></el-input>
                                                 </el-col>
                                             </el-row>
@@ -1100,14 +1106,14 @@ export default {
                 this.afferentList = []
             }
         },
-        imgInput(val) {
-            this.deleteList = []
-            this.imgList = []
-            for (let x in val) {
-                this.deleteList.push(val[x].name)
-                this.imgList.push(val[x].name)
-            }
-        },
+        // imgInput(val) {
+        //     this.deleteList = []
+        //     this.imgList = []
+        //     for (let x in val) {
+        //         this.deleteList.push(val[x].name)
+        //         this.imgList.push(val[x].name)
+        //     }
+        // },
         checkedList(val) {
             checkList = val
             if (val.length == this.deleteList.length && val.length != 0) this.deleteWhole = true

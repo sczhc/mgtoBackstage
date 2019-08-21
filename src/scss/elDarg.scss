@@ -18,9 +18,12 @@
                     cursor: pointer;
                     overflow: hidden;
                     display: flex;
+                    flex-wrap: wrap;
                     border: 1px solid #ccc;
                     padding: 10px;
-
+                    [role='tab'] {
+                        min-width: 120px;
+                    }
                     >div {
                         position: relative;
 

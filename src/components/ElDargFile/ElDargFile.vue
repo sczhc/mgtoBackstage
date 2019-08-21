@@ -17,13 +17,10 @@
                                     </label>
                                 </div>
                                 <div class="label-holder">
-                                    <el-button @click="deleteCurrent(index)" icon="el-icon-close"></el-button>
+                                    <el-button @click="deleteCurrent(item.id)" icon="el-icon-close"></el-button>
                                 </div>
                             </div>
                         </a>
-                        <!-- <div class="tools-top">
-                            <el-button @click="handleModal"><i class="el-icon-edit"></i>編輯</el-button>
-                        </div> -->
                     </div>
                     <div class="img-file">
                         <el-collapse v-model="activeNames">
@@ -59,80 +56,13 @@
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </div>
     </div>
-    <!-- <el-dialog class="file-modal" :visible.sync="imgModal" title="編輯">
-        <el-form label-width="100px">
-            <el-row>
-                <el-col :span="24">
-                    <el-form-item>
-                        <template slot="label">
-                            <label><span class="mandatory">*</span>附件類型</label>
-                        </template>
-                        <el-select v-model="imgTyp">
-                            <el-option value="38" label="圖片"></el-option>
-                            <el-option value="37" label="文件"></el-option>
-                            <el-option value="39" label="影片"></el-option>
-                            <el-option value="40" label="社交渠道"></el-option>
-                            <el-option value="41" label="其他"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="文件">
-                        <label class="ace-file-input">
-                            <input type="file" class="modalFile" ref="modalFile" @change="handleModalChange" accept="application/pdf,application/octet-stream,image/png,image/jpeg,image/pjpeg,image/gif,image/bmp,text/plain,text/srt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,video/3gpp2,video/mp4,audio/mpeg,audio/mp3,video/mp3,video/3gpp,video/mp4v-es,video/x-ms-asf,video/x-ms-wmv,video/mng,video/x-mng,video/x-ms-wma,application/x-gzip,application/xml,text/xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                            <span class="ace-file-container" :data-title="fileText">
-                                <span class="ace-file-name" :data-title="fileBrowse">
-                                    <i class="el-icon-upload"></i>
-                                </span>
-                            </span>
-                            <a href="javascript:void(0)" v-if="isUpload" class="remove" @click="removeFile">
-                                <i class="el-icon-close"></i>
-                            </a>
-                        </label>
-                        <div class="help-block" v-if="isUpload">
-                            <a href="" target="_blank">查看文件</a>
-                        </div>
-                        <p class="text-primary">
-                            允許上傳pdf,octet-stream,png,jpeg,pjpeg,gif,bmp,plain,srt,vnd.openxmlformats-officedocument.spreadsheetml.sheet,vnd.ms-excel,3gpp2,mp4,mpeg,mp3,mp3,3gpp,mp4v-es,x-ms-asf,x-ms-wmv,mng,x-mng,x-ms-wma,x-gzip,xml,xml,msword,vnd.openxmlformats-officedocument.wordprocessingml.document的文件，文件大小限制100M
-                        </p>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item>
-                        <div class="language-content">
-                            <div class="lang-list">
-                                <ul class="language">
-                                    <li v-for="(item,index) in language" :key="`lang-list-${index}`" @click="handleChangeLang(item)" :class="[item.active? 'lang-active':'']">{{item.text}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item>
-                        <template slot="label">
-                            <label><span class="mandatory">*</span>Title</label>
-                        </template>
-                        <el-input v-model="titleEdit"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item>
-                        <template slot="label">
-                            <label><span class="mandatory">*</span>Summary</label>
-                        </template>
-                        <el-input v-model="summaryEdit"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-        <template slot="footer">
-            <el-button @click="handleClose">關閉</el-button>
-        </template>
-    </el-dialog> -->
 </div>
 </template>
 
+<script>
+// cdn
+// <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js">
+</script>
 <script>
 import Sortable from 'sortablejs';
 export default {
@@ -158,12 +88,7 @@ export default {
     data() {
         return {
             imgs: [],
-            imgModal: false,
             imgTyp: '38',
-            fileText: '選擇文件',
-            fileBrowse: '瀏覽 ...',
-            isUpload: false,
-            // language: [],
             preset: '',
             checkedNames: [],
             enclosureList: [],
@@ -172,50 +97,35 @@ export default {
         }
     },
     methods: {
-        removeFile() {
-            let obj = this.$refs.modalFile
-            obj.value = ''
-            this.fileBrowse = '瀏覽 ...'
-            this.fileText = '選擇文件'
-            this.isUpload = false
-        },
         handleClick() {
             this.$refs.input.click()
         },
-        handleModal() {
-            this.imgModal = true
-        },
-        handleClose() {
-            this.imgModal = false
-        },
         handleChange() {
             let files = this.$refs.input.files
-            this.appendFile(files)
+            this.uploadFiles(files)
         },
-        // handleModalChange(event) {
-        //     let tar = event.target.files
-        //     if (tar) {
-        //         this.fileBrowse = tar[0].name
-        //         this.fileText = '變更'
-        //         this.isUpload = true
-        //     }
-        // },
-        handleChangeLang(item) {
-            this.language.forEach(item => item.active = false)
-            item.active = true
+        deleteCurrent(id) {
+            // 请求api
+            // axios.post('xxx',{id:id}).then(res => {
+            //     console.log(res)
+            // }).catch(err => {
+            //     console.log(err)
+            // })
         },
-        appendFile(files) {
-            let file, url
-            for (file of files) {
-                url = window.URL.createObjectURL(file)
-                this.imgs.push({
-                    url: url,
-                    name: file.name
-                })
+        uploadFiles(file) {
+            let formData = new FormData()
+            for (let key in file) {
+                console.log(key, file[key])
+                formData.append(key, file[key])
             }
-        },
-        deleteCurrent(index) {
-            this.imgs.splice(index, 1)
+            // formData.append('file',file)
+            console.log(formData)
+            // 请求api
+            // axios.post('xxxx',formData).then(res => {
+            //     console.log(res)
+            // }).catch(err => {
+            //     console.log(err)
+            // })
         },
         onSubmit() {
 
@@ -225,18 +135,18 @@ export default {
         window.onresize = () => {
             this.resizeWidth = window.innerWidth
         }
-
-        document.querySelector('.uploadArea').addEventListener('dragenter', (event) => {
+        let element = document.querySelector('.uploadArea')
+        element.addEventListener('dragenter', (event) => {
             event.preventDefault()
         })
-        document.querySelector('.uploadArea').addEventListener('dragover', (event) => {
+        element.addEventListener('dragover', (event) => {
             event.preventDefault()
         })
-        document.querySelector('.uploadArea').addEventListener('drop', (event) => {
+        element.addEventListener('drop', (event) => {
             event.stopPropagation()
             event.preventDefault()
             let files = event.dataTransfer.files
-            this.appendFile(files)
+            this.uploadFiles(files)
         })
 
         let $ul = document.querySelector('.dargImg ul')
@@ -262,29 +172,15 @@ export default {
             },
             onStart(event) {
                 console.log(event)
+            },
+            onEnd(event) {
+                console.log(event.newDraggableIndex)
+                console.log(event.to)
+                console.log(event.from)
             }
         })
     },
     computed: {
-        // currentIndex() {
-        //     return this.language.findIndex(item => item.active)
-        // },
-        // titleEdit: {
-        //     get() {
-        //         return this.currentIndex > -1 ? this.language[this.currentIndex].content.title : ''
-        //     },
-        //     set(val) {
-        //         this.language[this.currentIndex].content.title = val
-        //     }
-        // },
-        // summaryEdit: {
-        //     get() {
-        //         return this.currentIndex > -1 ? this.language[this.currentIndex].content.summary : ''
-        //     },
-        //     set(val) {
-        //         this.language[this.currentIndex].content.summary = val
-        //     }
-        // },
         language() {
             let lang = []
             this.newLang.map(item => {
@@ -297,55 +193,31 @@ export default {
             return lang
         }
     },
-    created() {
-        // let lang = []
-        // lang = this.newLang.map(item => {
-        //     return {
-        //         ...item
-        //     }
-        // })
-        // lang.forEach(item => item.active = false)
-        // lang[0].active = true
-        // this.language = lang
-    },
+    created() {},
     watch: {
-        'imgs': {
+        imgList: {
             handler(n) {
-                this.$emit('imgInput', n)
+                this.imgs = n
             },
+            immediate: true,
             deep: true
         },
-        'checkedNames': {
+        checkedNames: {
             handler(n) {
                 this.$emit('checked', n)
             },
             deep: true
         },
-        'afferentList': {
+        afferentList: {
             handler(n) {
                 this.checkedNames = n
             },
             deep: true,
             immediate: true
         },
-        'presetLang': {
+        presetLang: {
             handler(n) {
-                let obj = n
-                this.language.forEach(item => {
-                    if (obj == '')
-                        obj = 'zh_TW'
-                    if (item.value == obj) {
-                        item.disabled = true
-                        this.enclosureList.push({
-                            title: item.text,
-                            key: Date().now,
-                            imgTyp: '38',
-                            titleEdit: '',
-                            summaryEdit: ''
-                        })
-                    }
-                })
-                this.preset = n
+                this.preset = n ? n : 'zh_TW'
             },
             immediate: true
         }
