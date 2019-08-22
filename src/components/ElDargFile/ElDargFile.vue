@@ -65,6 +65,9 @@
 </script>
 <script>
 import Sortable from 'sortablejs';
+import {
+    setTimeout
+} from 'timers';
 export default {
     props: {
         imgList: {
@@ -102,7 +105,8 @@ export default {
         },
         handleChange() {
             let files = this.$refs.input.files
-            this.uploadFiles(files)
+            this.toBase64(files)
+            // this.uploadFiles(files)
         },
         deleteCurrent(id) {
             // 请求api
@@ -111,6 +115,17 @@ export default {
             // }).catch(err => {
             //     console.log(err)
             // })
+        },
+        toBase64(file) {
+            let reader = new FileReader()
+            for (let i in file) {
+                setTimeout(() => {
+                    reader.readAsDataURL(file[i])
+                    reader.onload = () => {
+                        console.log(reader.result)
+                    }
+                }, 300)
+            }
         },
         uploadFiles(file) {
             let formData = new FormData()
@@ -128,7 +143,7 @@ export default {
             // })
         },
         onSubmit() {
-
+            console.log('submit')
         }
     },
     mounted() {
@@ -169,31 +184,9 @@ export default {
                 // 更新items数组
                 let item = _this.imgs.splice(oldIndex, 1)
                 _this.imgs.splice(newIndex, 0, item[0])
-            },
-            onStart(event) {
-                console.log(event)
-            },
-            onEnd(event) {
-                console.log(event.newDraggableIndex)
-                console.log(event.to)
-                console.log(event.from)
             }
         })
     },
-    computed: {
-        language() {
-            let lang = []
-            this.newLang.map(item => {
-                lang.push({
-                    disabled: false,
-                    ...item
-                })
-            })
-            lang.splice(0, 1)
-            return lang
-        }
-    },
-    created() {},
     watch: {
         imgList: {
             handler(n) {
